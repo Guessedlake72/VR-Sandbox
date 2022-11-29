@@ -28,6 +28,9 @@ AFRAME.registerComponent('spawn-entity', {
 
       var image = document.createElement('a-image');
       image.setAttribute("src","https://browserstack.wpenginepowered.com/wp-content/uploads/2021/03/resp-design-mode-700x550.png")
+      image.setAttribute("height","2.1")
+      image.setAttribute("width","1.6")
+      image.setAttribute("position","0 1.25 0")
 
       
       piece.appendChild(frame);
