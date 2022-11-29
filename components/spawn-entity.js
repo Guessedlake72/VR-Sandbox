@@ -20,7 +20,7 @@ AFRAME.registerComponent('spawn-entity', {
       // Create the box element (not yet added).
       var piece = document.createElement('a-entity');
       var frame = document.createElement('a-gltf-model');
-        frame.setAttribute("src","../assets/scene.gltf");
+        frame.setAttribute("src","https://guessedlake72.github.io/VR-Sandbox/assets/scene.gltf");
         frame.setAttribute("position",{ x: 1, y: 0, z: -.06 });
         frame.setAttribute("scale", { x: 0.01, y: 0.01, z: 0.01 } );
         frame.setAttribute("rotation", { x: 0, y: 270, z: 0 } );
@@ -31,7 +31,7 @@ AFRAME.registerComponent('spawn-entity', {
       image.setAttribute("height","2.1")
       image.setAttribute("width","1.6")
       image.setAttribute("position","0 1.25 0")
-
+ 
       
       piece.appendChild(frame);
       piece.appendChild(image);
