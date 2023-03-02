@@ -31,7 +31,7 @@
         });
   
         // Append to scene.
-        el.sceneEl.appendChild(spawnEl);s
+        el.sceneEl.appendChild(spawnEl);
       });
     }
   });

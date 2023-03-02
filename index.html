@@ -3,7 +3,8 @@
 <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.x/dist/aframe-controller-cursor-component.min.js"></script>
 <script src="/components/random-color.js"></script>
 <script src="/components/snap.js"></script>
-<script src="https://guessedlake72.github.io/VR-Sandbox/components/spawn-entity.js"></script>
+<script src="/components/gamestate.js"></script>
+<script src="/components/spawn-entity.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
 <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>s
@@ -22,7 +23,7 @@
 
 </head>
 <body>
-  <a-scene>
+  <a-scene gamestate id="scene">
     <a-assets>
       <img id="picture" src="https://browserstack.wpenginepowered.com/wp-content/uploads/2021/03/resp-design-mode-700x550.png">
       <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
