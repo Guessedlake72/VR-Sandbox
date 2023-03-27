@@ -1,8 +1,10 @@
 AFRAME.registerSystem('gamestate', {
     // Initial state.
     schema: {
-       objs: {type: 'array', default: ["box,0,0,0"]},
-       active : {type: 'string', default:'box'}
+       objs: {type: 'array'},
+       active : {type: 'int', default: 0},
+       activeMaterial : {type: 'int', default: 0},
+       activeScale : {type: 'float', default: 1.0},
     },
   
     init: function () {
@@ -24,11 +26,33 @@ AFRAME.registerSystem('gamestate', {
         return newState;
       });
 
-      registerHandler('addBox', function (newState, params) {
+      
+      registerHandler('incrementActive', function (newState) {
+        console.log('recived incrementActive');
+        newState.active =  newState.active + 1;
+        return newState;
+      });
+
+      registerHandler('decrementActive', function (newState) {
+        console.log('recived decrementActive');
+        newState.active =  newState.active - 1;
+        return newState;
+      });
+
+      registerHandler('changeState', function (newState, params) {
+        console.log('changing state')
+        newState.objs = params.detail.objs
+        return newState;
+      });
+
+      registerHandler('addObj', function (newState, params) {
         var x = params.detail.posx;
         var z = params.detail.posz;
-        console.log('added ' + z.toString() + x.toString());
-        newState.objs.push("box," +z.toString() +","+ x.toString());
+        var y = params.detail.posy;
+        var objname = params.detail.objname;
+
+        console.log('added ',x,y,z);
+        newState.objs.push(objname + "," +x.toString() +","+ y.toString()+ ","+ z.toString());
         return newState;
       });
 
