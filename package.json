@@ -4,7 +4,8 @@
   "version": "0.3.0",
   "license": "MIT",
   "scripts": {
-    "start": "budo --live --verbose --port 3000 --open",
+    "start": "budo --live --verbose --port 3000 --open ",
+    "start-ssl": "budo --ssl --cors --cert=localhost.pem --key=localhost-key.pem",
     "deploy": "ghpages",
     "ghpages": "ghpages"
   },

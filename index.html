@@ -1,4 +1,4 @@
-<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 <script src="https://unpkg.com/aframe-teleport-controls@0.2.x/dist/aframe-teleport-controls.min.js"></script>
 <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.x/dist/aframe-controller-cursor-component.min.js"></script>
 <script src="/components/random-color.js"></script>
@@ -6,10 +6,18 @@
 <script src="/components/gamestate.js"></script>
 <script src="/components/spawn-entity.js"></script>
 <script src="/components/save-upload.js"></script>
+<script src="/components/menu.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
 <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
+<script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
+<script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+<script src="https://unpkg.com/aframe-proxy-event-component@2.1.0/dist/aframe-proxy-event-component.min.jss"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+<script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+
 
 <head>
   <script id="plane" type="text/html">
@@ -26,7 +34,7 @@
 
 </head>
 <body>
-  <a-scene gamestate save-upload id="scene" >
+  <a-scene gamestate menu save-upload id="scene" >
     <a-assets>
       <img id="picture" src="https://browserstack.wpenginepowered.com/wp-content/uploads/2021/03/resp-design-mode-700x550.png">
       <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
@@ -37,17 +45,52 @@
          random-color
          snap="offset: 0.25 0.25 0.25; snap: 0.5 0.5 0.5"
       ></a-mixin>
+      <a-mixin id="cube" geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5"
+      hoverable grabbable stretchable draggable droppable
+      shadow
+      event-set__dragdrop="_event: drag-drop; geometry.primitive: sphere; geometry.radius: 0.25"
+      event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+      event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+      event-set__dragon="_event: dragover-start; material.wireframe: true"
+      event-set__dragoff="_event: dragover-end; material.wireframe: false">
+      </a-mixin>
+      <a-asset-item id="room" src="/assets/room/scene.gltf"></a-asset-item>
+      <a-asset-item id="lamp" src="/assets/lamp/StainedGlassLamp.gltf"></a-asset-item>
+      <a-asset-item id="duck" src="/assets/duck/Duck.gltf"></a-asset-item>
+      <a-asset-item id="toycar" src="/assets/toycar/ToyCar.gltf"></a-asset-item>
+      
+
     </a-assets>
     <a-cylinder id="ground" src="#groundTexture" radius="30" height="0.1"></a-cylinder>
+    <a-entity light="color: #FFF; intensity: 1.5" position="-1 2 0"></a-entity>
+    <a-entity light="type: ambient; color: #BBB"></a-entity>
 
+    <a-entity gltf-model="#room" scale=".35 .35 .35" position="-3 .7 0"></a-entity>
+    
     <a-sky id="background" src="#skyTexture" theta-length="90" radius="30"></a-sky>
     <!-- Hands. -->
     <a-entity id="teleHand" hand-controls="left" teleport-controls="type: parabolic; collisionEntities: [mixin='voxel'], #ground"></a-entity>
     <a-entity id="blockHand" hand-controls="right" controller-cursor intersection-spawn="event: click; mixin: voxel"></a-entity>
-
+    <a-entity sphere-collider="objects: a-box" super-hands="grabStartButtons: xbuttondown; grabEndButtons: xbuttonup; dragDropStartButtons: ybuttondown; dragDropEndButtons: ybuttonup" hand-controls="hand: left" ></a-entity>
+    <a-entity sphere-collider="objects: a-box" super-hands="grabStartButtons: abuttondown; grabEndButtons: abuttonup; dragDropStartButtons: bbuttondown; dragDropEndButtons: bbuttonup" hand-controls="hand: right"></a-entity>
     <!-- Camera. -->
-    <a-camera camera look-controls id ="camera" >
-      <a-cursor spawn-entity></a-cursor>
-    </a-camera>
+    <a-box hoverable grabbable stretchable draggable droppable material="transparent: true; opacity: 0.1" position="0 2 -1">    <a-entity gltf-model="#duck" hoverable grabbable stretchable draggable droppable position="0 0 0" scale = "1 1 1" ></a-entity></a-box>
+
+
+
+    <a-entity camera wasd-controls position="0 2 2"
+                look-controls
+                capture-mouse
+                id ="camera"
+                raycaster="objects: .cube" cursor="rayOrigin:mouse"
+                static-body="shape: sphere; sphereRadius: 0.001"
+                super-hands="colliderEvent: raycaster-intersection;
+                             colliderEventProperty: els;
+                             colliderEndEvent:raycaster-intersection-cleared;
+                             colliderEndEventProperty: clearedEls;">
+      
+            <a-cursor spawn-entity></a-cursor>
+                      </a-entity>
+      <a-entity class="cube" mixin="cube" position="0 1 -1.25" material="color: red"></a-entity>
   </a-scene>
 </body>

@@ -5,6 +5,8 @@ AFRAME.registerSystem('gamestate', {
        active : {type: 'int', default: 0},
        activeMaterial : {type: 'int', default: 0},
        activeScale : {type: 'float', default: 1.0},
+       srcs: {type: 'array'},
+
     },
   
     init: function () {

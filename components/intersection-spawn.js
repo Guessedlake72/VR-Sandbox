@@ -19,7 +19,7 @@
         console.log(data);
         // Create element.
         const spawnEl = document.createElement('a-entity');
-  
+      
         // Snap intersection point to grid and offset from center.
         spawnEl.setAttribute('position', evt.detail.intersection.point);
         

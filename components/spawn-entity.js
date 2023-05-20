@@ -8,14 +8,16 @@ AFRAME.registerComponent('spawn-entity', {
   // Init lifecycle method fires upon initialization of component.
   init: function() {
 
-    const primitives = ["a-box","a-sphere","a-cylinder"]
+    const primitives = ["a-box","a-sphere","a-cylinder","frame","a-triangle","a-torus","a-cone"]
     const materials = ["color: red","color: green","color: blue","transparent: true"]
-    
+    var src = ["https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80,","https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Ym9va3xlbnwwfHwwfHw%3D&w=1000&q=80","https://images.unsplash.com/photo-1495344517868-8ebaf0a2044a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80"]
     // Allows the use of "self" as "this" within the listener without binding.
     var self = this;
+    var dragging = false;
     var box = document.createElement('a-box')
     box.setAttribute("position",{ x: 0.75, y: 0, z: -1 });
     box.setAttribute("scale", { x: 0.5, y: 0.5, z: 0.5 } );
+    box.setAttribute("material", materials[0]);
     camera.appendChild(box);
     
     window.addEventListener('keydown', function(e) {
@@ -26,8 +28,8 @@ AFRAME.registerComponent('spawn-entity', {
         state.active = state.active+1;
         currActive = state.active;
         currMaterial = state.activeMaterial;
-        console.log(state.active)
-        hoverActive(primitives[currActive],materials[currMaterial])
+        console.log(state.active);
+        hoverActive(primitives[currActive],materials[currMaterial]);
       }
 
       if(e.code == "Comma"){
@@ -38,8 +40,8 @@ AFRAME.registerComponent('spawn-entity', {
         currActive = state.active;
         currMaterial = state.activeMaterial;
 
-        console.log(state.active)
-        hoverActive(primitives[currActive],materials[currMaterial])
+        console.log(state.active);
+        hoverActive(primitives[currActive],materials[currMaterial]);
       }
 
       if(e.code == "KeyM"){
@@ -49,8 +51,8 @@ AFRAME.registerComponent('spawn-entity', {
         state.activeMaterial = state.activeMaterial+1;
         currActive = state.active;
         currMaterial = state.activeMaterial;
-        console.log(state.activeMaterial)
-        hoverActive(primitives[currActive],materials[currMaterial])
+        console.log(state.activeMaterial);
+        hoverActive(primitives[currActive],materials[currMaterial]);
       }
 
       if(e.code == "KeyN"){
@@ -60,8 +62,8 @@ AFRAME.registerComponent('spawn-entity', {
         state.activeMaterial = state.activeMaterial-1;
         currActive = state.active;
         currMaterial = state.activeMaterial;
-        console.log(state.activeMaterial)
-        hoverActive(primitives[currActive],materials[currMaterial])
+        console.log(state.activeMaterial);
+        hoverActive(primitives[currActive],materials[currMaterial]);
       }
 
       /*
@@ -81,14 +83,28 @@ AFRAME.registerComponent('spawn-entity', {
       if(e.code == "Space"){
         loadState();
       }
+      if(e.code == "KeyX"){
+        dragging = true;
+        console.log(dragging);
+
+      }
       
+    });
+    window.addEventListener('keyup', function(e) {
+      if(e.code == "KeyX"){
+        dragging = false;
+        console.log(dragging);
+      }
     });
 
     function hoverActive(obj,material){
       var camera = document.querySelector('#camera');
       camera.removeChild(camera.lastChild);
-      scene = document.querySelector('#scene');
-      var activeObj = document.createElement(obj)
+      var scene = document.querySelector('#scene');
+      var activeObj = document.createElement(obj);
+      if(obj == "frame"){
+        activeObj = document.createElement("a-box");
+      }
       activeObj.setAttribute("position",{ x: 0.75, y: 0, z: -1 });
       activeObj.setAttribute("scale", { x: 0.5, y: 0.5, z: 0.5 } );
       activeObj.setAttribute("material",material);
@@ -103,13 +119,16 @@ AFRAME.registerComponent('spawn-entity', {
       
       if(obj == 'frame') {
         var frame = document.createElement('a-gltf-model');
+          var activeMaterial = state.activeMaterial;
           frame.setAttribute("src","https://guessedlake72.github.io/VR-Sandbox/assets/scene.gltf");
           frame.setAttribute("position",{ x: 1, y: 0, z: -.06 });
           frame.setAttribute("scale", { x: 0.01, y: 0.01, z: 0.01 } );
           frame.setAttribute("rotation", { x: 0, y: 270, z: 0 } );
 
         var image = document.createElement('a-image');
-        image.setAttribute("src","https://browserstack.wpenginepowered.com/wp-content/uploads/2021/03/resp-design-mode-700x550.png")
+        console.log(state.srcs)
+        src = state.srcs;
+        image.setAttribute("src", src[activeMaterial])
         image.setAttribute("height","2.1")
         image.setAttribute("width","1.6")
         image.setAttribute("position","0 1.25 0")
@@ -120,10 +139,16 @@ AFRAME.registerComponent('spawn-entity', {
         var object = document.createElement(obj)
         object.setAttribute("position",{ x: 0, y: 0.5, z: 0 });
         object.setAttribute("material",material);
+        object.setAttribute("grabbable","")
+        object.setAttribute("draggable", "")
+        object.setAttribute("droppable", "")
+        console.log(object)
         piece.appendChild(object);
       }
       piece.setAttribute('position',  { x: pos[0], y: pos[1], z: pos[2] });
       piece.setAttribute('rotation',  { x: 0, y: rotation, z: 0 });
+
+
       //var x = e.detail.intersection.point['x']-camera.getAttribute('position')['x'];
       //var z = ( e.detail.intersection.point['z']-camera.getAttribute('position')['z']);
       //this.sceneEl.emit('addBox', {posx: x, posz: z});
@@ -139,8 +164,8 @@ AFRAME.registerComponent('spawn-entity', {
       for (let i = 0; i < state.objs.length; i++) {
         console.log(state.objs[i].split(','));
         var objarr= state.objs[i].split(',');
-        position = [objarr[1],objarr[2],objarr[3]]
-        spawnEntity(objarr[0],position,0)
+        position = [objarr[1],objarr[2],objarr[3]];
+        spawnEntity(objarr[0],position,0);
         }
       }
 
@@ -151,7 +176,6 @@ AFRAME.registerComponent('spawn-entity', {
       var state = this.sceneEl.getAttribute('gamestate');
       var camera = document.querySelector('#camera');
       var piece = document.createElement('a-entity');
-
       /*
       if(state.active == 'frame') {
         var frame = document.createElement('a-gltf-model');

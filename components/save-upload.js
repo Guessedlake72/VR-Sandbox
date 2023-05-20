@@ -40,6 +40,25 @@ AFRAME.registerComponent('save-upload', {
                         }
                 })
             }
+            if(e.code == "KeyT"){
+                axios.get('https://vrsandbox-62fc.restdb.io/rest/assets', {
+                    params: {
+                        "X-API-Key": "636af092e9a77f5984220834",  
+                    }
+                })
+                .then(function (response) {
+                    console.log(response);
+                    var scene = document.querySelector('#scene');
+                    var state = scene.getAttribute('gamestate');
+                    var srcs = []
+                    for (let i = 0; i < response.data.length; i++) {
+                        if(response.data[i]["userID"] == 1){
+                            srcs.push(response.data[i]["src"]);
+                        }
+                    }
+                    state.srcs = srcs;
+                })
+            }
         });
 
         
