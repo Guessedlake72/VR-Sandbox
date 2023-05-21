@@ -83,19 +83,27 @@ AFRAME.registerComponent('spawn-entity', {
       if(e.code == "Space"){
         loadState();
       }
-      if(e.code == "KeyX"){
-        dragging = true;
-        console.log(dragging);
-
-      }
       
     });
-    window.addEventListener('keyup', function(e) {
-      if(e.code == "KeyX"){
-        dragging = false;
-        console.log(dragging);
+    /*
+    this.el.addEventListener('raycaster-intersection', function(evt) {
+      console.log(evt.detail)
+      console.log(evt)
+
+    })
+    */
+    this.el.addEventListener('buttondown', function(evt) {
+      if(evt.detail.id == 4){
+        var state = this.sceneEl.getAttribute('gamestate');
+        var rhand = document.querySelector('#rhand');
+        var pos = (rhand.getAttribute('position'));
+        console.log(pos);
+        spawnEntity(primitives[state.active],[pos['x'],pos['y'],pos['z']],0.5,0,materials[state.activeMaterial]);
+
       }
-    });
+
+
+    })
 
     function hoverActive(obj,material){
       var camera = document.querySelector('#camera');
@@ -159,7 +167,7 @@ AFRAME.registerComponent('spawn-entity', {
       }
       piece.setAttribute('position',  { x: pos[0], y: pos[1], z: pos[2] });
       piece.setAttribute('rotation',  { x: 0, y: rotation, z: 0 });
-
+      piece.setAttribute('scale', { x: scale, y: scale, z: scale });
 
       //var x = e.detail.intersection.point['x']-camera.getAttribute('position')['x'];
       //var z = ( e.detail.intersection.point['z']-camera.getAttribute('position')['z']);
@@ -182,13 +190,13 @@ AFRAME.registerComponent('spawn-entity', {
       }
 
 
-
+      /*
     // Add the click listener.
     this.el.addEventListener('click', function(e) {
       var state = this.sceneEl.getAttribute('gamestate');
       var camera = document.querySelector('#camera');
       var piece = document.createElement('a-entity');
-      /*
+    
       if(state.active == 'frame') {
         var frame = document.createElement('a-gltf-model');
           frame.setAttribute("src","https://guessedlake72.github.io/VR-Sandbox/assets/scene.gltf");
@@ -209,7 +217,7 @@ AFRAME.registerComponent('spawn-entity', {
         box.setAttribute("position",{ x: 0, y: 0.5, z: 0 });
         piece.appendChild(box);
       }
-      */
+      
       console.log(camera.getAttribute('position'));
       var x = e.detail.intersection.point['x']-camera.getAttribute('position')['x'];
       var z = ( e.detail.intersection.point['z']-camera.getAttribute('position')['z']);
@@ -232,9 +240,10 @@ AFRAME.registerComponent('spawn-entity', {
 
       // Append the box element to the scene.      
     }
+    
     );
 
-   
+   */
   
   } 
   
