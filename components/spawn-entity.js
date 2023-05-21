@@ -139,9 +139,21 @@ AFRAME.registerComponent('spawn-entity', {
         var object = document.createElement(obj)
         object.setAttribute("position",{ x: 0, y: 0.5, z: 0 });
         object.setAttribute("material",material);
+        object.setAttribute("class","cube")
+        object.setAttribute("mixin","cube")
+
+        /*
         object.setAttribute("grabbable","")
         object.setAttribute("draggable", "")
-        object.setAttribute("droppable", "")
+        object.setAttribute("hoverable", "")
+        object.setAttribute("stretchable", "")
+        object.setAttribute("shadow", "")
+        object.setAttribute("event-set__dragdrop", "_event: drag-drop; geometry.primitive: sphere; geometry.radius: 0.25")
+        object.setAttribute("event-set__hoveron", "_event: hover-end; material.opacity: 1; transparent: false")
+        object.setAttribute("event-set__hoveroff", " _event: hover-end; material.opacity: 1; transparent: false")
+        object.setAttribute("event-set__dragon", "_event: dragover-start; material.wireframe: true")
+        object.setAttribute("event-set__dragoff", "_event: dragover-end; material.wireframe: false")
+        */
         console.log(object)
         piece.appendChild(object);
       }
