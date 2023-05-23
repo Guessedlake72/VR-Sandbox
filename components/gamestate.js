@@ -5,6 +5,7 @@ AFRAME.registerSystem('gamestate', {
        active : {type: 'int', default: 0},
        activeMaterial : {type: 'int', default: 0},
        activeScale : {type: 'float', default: 1.0},
+       primitives: {type: 'array',default: ["a-box","a-sphere","a-cylinder","a-triangle","a-torus","a-cone","a-box","a-sphere","a-cylinder","a-triangle","a-torus","a-cone","a-cylinder","a-triangle"]},
        srcs: {type: 'array'},
 
     },

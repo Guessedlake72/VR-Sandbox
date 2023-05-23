@@ -8,18 +8,20 @@ AFRAME.registerComponent('spawn-entity', {
   // Init lifecycle method fires upon initialization of component.
   init: function() {
 
-    const primitives = ["a-box","a-sphere","a-cylinder","frame","a-triangle","a-torus","a-cone"]
     const materials = ["color: red","color: green","color: blue","transparent: true"]
     var src = ["https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80,","https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Ym9va3xlbnwwfHwwfHw%3D&w=1000&q=80","https://images.unsplash.com/photo-1495344517868-8ebaf0a2044a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80"]
     // Allows the use of "self" as "this" within the listener without binding.
     var self = this;
     var dragging = false;
     var box = document.createElement('a-box')
-    box.setAttribute("position",{ x: 0.75, y: 0, z: -1 });
-    box.setAttribute("scale", { x: 0.5, y: 0.5, z: 0.5 } );
+    box.setAttribute("position",{ x: 0.0, y: 0, z: -0.1 });
+    box.setAttribute("scale", { x: 0.1, y: 0.1, z: 0.1 } );
     box.setAttribute("material", materials[0]);
-    camera.appendChild(box);
-    
+    var rhand = document.querySelector('#rhand');
+    rhand.appendChild(box);
+    var state = scene.getAttribute('gamestate');
+    var primitives = state.primitives;
+
     window.addEventListener('keydown', function(e) {
       if(e.code == "Period"){
         var scene = document.querySelector('#scene');
@@ -93,12 +95,13 @@ AFRAME.registerComponent('spawn-entity', {
     })
     */
     this.el.addEventListener('buttondown', function(evt) {
+      console.log(evt);
       if(evt.detail.id == 4){
         var state = this.sceneEl.getAttribute('gamestate');
         var rhand = document.querySelector('#rhand');
         var pos = (rhand.getAttribute('position'));
         console.log(pos);
-        spawnEntity(primitives[state.active],[pos['x'],pos['y'],pos['z']],0.5,0,materials[state.activeMaterial]);
+        spawnEntity(primitives[state.active],[pos['x'],pos['y'],pos['z']],0.1,0,materials[state.activeMaterial]);
 
       }
 
@@ -123,7 +126,7 @@ AFRAME.registerComponent('spawn-entity', {
       var scene = document.querySelector('#scene');
       var state = scene.getAttribute('gamestate');
       var camera = document.querySelector('#camera');
-      var piece = document.createElement('a-entity');
+      var piece = document.createElement('a-box');
       
       if(obj == 'frame') {
         var frame = document.createElement('a-gltf-model');
@@ -147,27 +150,15 @@ AFRAME.registerComponent('spawn-entity', {
         var object = document.createElement(obj)
         object.setAttribute("position",{ x: 0, y: 0.5, z: 0 });
         object.setAttribute("material",material);
-        object.setAttribute("class","cube")
-        object.setAttribute("mixin","cube")
-
-        /*
-        object.setAttribute("grabbable","")
-        object.setAttribute("draggable", "")
-        object.setAttribute("hoverable", "")
-        object.setAttribute("stretchable", "")
-        object.setAttribute("shadow", "")
-        object.setAttribute("event-set__dragdrop", "_event: drag-drop; geometry.primitive: sphere; geometry.radius: 0.25")
-        object.setAttribute("event-set__hoveron", "_event: hover-end; material.opacity: 1; transparent: false")
-        object.setAttribute("event-set__hoveroff", " _event: hover-end; material.opacity: 1; transparent: false")
-        object.setAttribute("event-set__dragon", "_event: dragover-start; material.wireframe: true")
-        object.setAttribute("event-set__dragoff", "_event: dragover-end; material.wireframe: false")
-        */
         console.log(object)
         piece.appendChild(object);
       }
       piece.setAttribute('position',  { x: pos[0], y: pos[1], z: pos[2] });
       piece.setAttribute('rotation',  { x: 0, y: rotation, z: 0 });
       piece.setAttribute('scale', { x: scale, y: scale, z: scale });
+      piece.setAttribute('material', "transparent: true; opacity: 0.2")
+      piece.setAttribute("class","movable")
+      piece.setAttribute("mixin","movable")
 
       //var x = e.detail.intersection.point['x']-camera.getAttribute('position')['x'];
       //var z = ( e.detail.intersection.point['z']-camera.getAttribute('position')['z']);
