@@ -9,6 +9,7 @@ AFRAME.registerComponent('menu', {
       var active = false;
       var selected = [1,1];
       var thumbstickReset = false;
+
       this.el.addEventListener('thumbstickmoved', function(evt) {
         if(active && !thumbstickReset){
           if(evt.detail.x < -0.95 && selected[0]!=1){
@@ -38,15 +39,14 @@ AFRAME.registerComponent('menu', {
           state.active = count;
           let selectedItem = document.getElementById("menuitem_"+count);
           selectedItem.setAttribute("material", "color:green");
-
-
           thumbstickReset = true;
+          hoverActive(state.primitives[state.active], "color:green");
         }
         if(thumbstickReset && evt.detail.x > -0.95 && evt.detail.x < 0.95 && evt.detail.y > -0.95 && evt.detail.y < 0.95){
           thumbstickReset = false;
           console.log("Reset")
         }
-      })
+      });
 
       window.addEventListener('keydown', function(e) {
         if(active){
@@ -80,10 +80,12 @@ AFRAME.registerComponent('menu', {
         console.log(count)
         state.active = count;
       }
-      })
+      }
+      );
 
-      this.el.addEventListener('buttondown', function(evt) {
-        if(evt.detail.hasOwnProperty("id") && evt.detail.id == 5){
+
+
+      this.el.addEventListener('bbuttondown', function(evt) {
           if(!active){
           active = true;
             var scene = document.querySelector('#scene');
@@ -110,19 +112,21 @@ AFRAME.registerComponent('menu', {
               item.id = "menuitem_"+i;
               menuContainer.appendChild(item);
             }
-            
-            menuContainer.setAttribute("position",{ x: camera.getAttribute('position')['x'], y: camera.getAttribute('position')['y'], z: camera.getAttribute('position')['z']-2 });
+            menuContainer.setAttribute("position",{ x: -1, y: -1, z: -2 });
+            //menuContainer.setAttribute("rotation",{ x: camera.object3D.rotation['_x']*57, y: camera.object3D.rotation['_y']*57, z: camera.object3D.rotation['_z']*57 });
             menuContainer.setAttribute("scale", { x: 0.1, y: 0.1, z: 0.1 } );
             menuContainer.id = "menucontainer";
-            scene.appendChild(menuContainer);
+            camera.appendChild(menuContainer);
+            
           }
             else{
               active = false
               let menuContainer = document.getElementById("menucontainer");
               menuContainer.remove();
             }
-        }
+        
       });
+
       window.addEventListener('keydown', function(e) {
         if(e.code == "KeyE"){
             if(!active){
@@ -163,8 +167,22 @@ AFRAME.registerComponent('menu', {
             }
       }
     });
-    
+
+    function hoverActive(obj,material){
+      var hovering = document.querySelector('#hovering');
+      hovering.removeChild(hovering.lastChild);
+      console.log(hovering.children)
+      var activeObj = document.createElement(obj);
+      //activeObj.setAttribute("position",{ x: 0.75, y: 0, z: -1 });
+      activeObj.setAttribute("scale", { x: 0.1, y: 0.1, z: 0.1 } );
+      activeObj.setAttribute("material",material);
+      hovering.appendChild(activeObj);
+    }
+
     } 
+    
+
+    
     
   });
   

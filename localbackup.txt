@@ -2,13 +2,13 @@
 <script src="https://unpkg.com/aframe-teleport-controls@0.2.x/dist/aframe-teleport-controls.min.js"></script>
 <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.x/dist/aframe-controller-cursor-component.min.js"></script>
 <!--replace-->
-<script src="https://raw.githubusercontent.com/Guessedlake72/VR-Sandbox/main/components/gamestate.js"></script>
+<script src="/components/gamestate.js"></script>
 <!--replace-->
-<script src="https://raw.githubusercontent.com/Guessedlake72/VR-Sandbox/main/components/spawn-entity.js"></script>
+<script src="/components/spawn-entity.js"></script>
 <!--replace-->
-<script src="https://raw.githubusercontent.com/Guessedlake72/VR-Sandbox/main/components/save-upload.js"></script>
+<script src="/components/save-upload.js"></script>
 <!--replace-->
-<script src="https://raw.githubusercontent.com/Guessedlake72/VR-Sandbox/main/components/menu.js"></script>
+<script src="/components/menu.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
 <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
@@ -31,7 +31,7 @@
 
   <script id="frame" type="text/html">
     <!--replace-->
-    <a-gltf-model src="https://raw.githubusercontent.com/Guessedlake72/VR-Sandbox/main/assets/scene.gltf" position="1 0 -.06" scale="0.01 0.01 0.01" rotation="0 270 0"></a-gltf-model>
+    <a-gltf-model src="/assets/scene.gltf" position="1 0 -.06" scale="0.01 0.01 0.01" rotation="0 270 0"></a-gltf-model>
     <a-image src="#picture" height="2.1" width="1.6" position="0 1.25 0"></a-image>
   </script>
 
@@ -79,11 +79,11 @@
       <a-mixin id="movable"
         hoverable grabbable stretchable draggable droppable></a-mixin>
       <!--replace-->
-      <a-asset-item id="room" src="https://raw.githubusercontent.com/Guessedlake72/VR-Sandbox/main/assets/room/scene.gltf"></a-asset-item>
+      <a-asset-item id="room" src="/assets/room/scene.gltf"></a-asset-item>
       <!--replace-->
-      <a-asset-item id="duck" src="https://raw.githubusercontent.com/Guessedlake72/VR-Sandbox/main/assets/duck/Duck.gltf"></a-asset-item>
+      <a-asset-item id="duck" src="/assets/duck/Duck.gltf"></a-asset-item>
       <!--replace-->
-      <a-asset-item id="toycar" src="https://raw.githubusercontent.com/Guessedlake72/VR-Sandbox/main/assets/toycar/ToyCar.gltf"></a-asset-item>
+      <a-asset-item id="toycar" src="/assets/toycar/ToyCar.gltf"></a-asset-item>
       
 
     </a-assets>

@@ -13,13 +13,16 @@ AFRAME.registerComponent('spawn-entity', {
     // Allows the use of "self" as "this" within the listener without binding.
     var self = this;
     var dragging = false;
-    var box = document.createElement('a-box')
+    var state = scene.getAttribute('gamestate');
+    var hovering = document.createElement('a-entity');
+    hovering.id = "hovering";
+    var box =  document.createElement('a-box');
     box.setAttribute("position",{ x: 0.0, y: 0, z: -0.1 });
     box.setAttribute("scale", { x: 0.1, y: 0.1, z: 0.1 } );
-    box.setAttribute("material", materials[0]);
+    box.setAttribute("material","transparent: true; opacity: 0");
+    hovering.appendChild(box)
     var rhand = document.querySelector('#rhand');
-    rhand.appendChild(box);
-    var state = scene.getAttribute('gamestate');
+    rhand.appendChild(hovering);
     var primitives = state.primitives;
 
     window.addEventListener('keydown', function(e) {
@@ -95,34 +98,23 @@ AFRAME.registerComponent('spawn-entity', {
     })
     */
     this.el.addEventListener('buttondown', function(evt) {
-      console.log(evt);
-      if(evt.detail.id == 4){
+      if(evt.detail.hasOwnProperty("id")  && evt.detail.id == 4){
         var state = this.sceneEl.getAttribute('gamestate');
         var rhand = document.querySelector('#rhand');
-        var pos = (rhand.getAttribute('position'));
-        console.log(pos);
-        spawnEntity(primitives[state.active],[pos['x'],pos['y'],pos['z']],0.1,0,materials[state.activeMaterial]);
-
+        //var pos = (rhand.getAttribute('position'));
+        var activeObj = hovering.lastChild
+        var pos = activeObj.object3D.getWorldPosition(new THREE.Vector3())
+        var quaternion = activeObj.object3D.getWorldQuaternion(new THREE.Quaternion())
+        let rot = new THREE.Euler();
+        rot.setFromQuaternion(quaternion);
+        spawnEntity(primitives[state.active],[pos['x'],pos['y'],pos['z']],0.1,rot,materials[state.activeMaterial]);
       }
 
 
     })
 
-    function hoverActive(obj,material){
-      var camera = document.querySelector('#camera');
-      camera.removeChild(camera.lastChild);
-      var scene = document.querySelector('#scene');
-      var activeObj = document.createElement(obj);
-      if(obj == "frame"){
-        activeObj = document.createElement("a-box");
-      }
-      activeObj.setAttribute("position",{ x: 0.75, y: 0, z: -1 });
-      activeObj.setAttribute("scale", { x: 0.5, y: 0.5, z: 0.5 } );
-      activeObj.setAttribute("material",material);
-      camera.appendChild(activeObj);
-    }
 
-    function spawnEntity(obj,pos,scale,rotation,material){
+    function spawnEntity(obj,pos,scale,rot,material){
       var scene = document.querySelector('#scene');
       var state = scene.getAttribute('gamestate');
       var camera = document.querySelector('#camera');
@@ -148,13 +140,12 @@ AFRAME.registerComponent('spawn-entity', {
 
       } else {
         var object = document.createElement(obj)
-        object.setAttribute("position",{ x: 0, y: 0.5, z: 0 });
         object.setAttribute("material",material);
-        console.log(object)
         piece.appendChild(object);
       }
       piece.setAttribute('position',  { x: pos[0], y: pos[1], z: pos[2] });
-      piece.setAttribute('rotation',  { x: 0, y: rotation, z: 0 });
+      console.log(rot)
+      piece.object3D.rotation.set(rot['x'],rot['y'],rot['z']);
       piece.setAttribute('scale', { x: scale, y: scale, z: scale });
       piece.setAttribute('material', "transparent: true; opacity: 0.2")
       piece.setAttribute("class","movable")
