@@ -84,11 +84,11 @@ AFRAME.registerComponent('spawn-entity', {
         frame.setAttribute("rotation", { x: 0, y: 270, z: 0 } );
         camera.appendChild(frame);
       }
-      */
+
       if(e.code == "Space"){
         loadState();
       }
-      
+            */
     });
     /*
     this.el.addEventListener('raycaster-intersection', function(evt) {
@@ -118,7 +118,7 @@ AFRAME.registerComponent('spawn-entity', {
       var scene = document.querySelector('#scene');
       var state = scene.getAttribute('gamestate');
       var camera = document.querySelector('#camera');
-      var piece = document.createElement('a-box');
+      var piece = document.createElement('a-entity');
       
       if(obj == 'frame') {
         var frame = document.createElement('a-gltf-model');
@@ -147,9 +147,8 @@ AFRAME.registerComponent('spawn-entity', {
       console.log(rot)
       piece.object3D.rotation.set(rot['x'],rot['y'],rot['z']);
       piece.setAttribute('scale', { x: scale, y: scale, z: scale });
-      piece.setAttribute('material', "transparent: true; opacity: 0.2")
-      piece.setAttribute("class","movable")
-      piece.setAttribute("mixin","movable")
+      piece.setAttribute("class","physicsBody")
+      piece.setAttribute("mixin","physicsBody")
 
       //var x = e.detail.intersection.point['x']-camera.getAttribute('position')['x'];
       //var z = ( e.detail.intersection.point['z']-camera.getAttribute('position')['z']);

@@ -41,6 +41,7 @@ AFRAME.registerComponent('menu', {
           selectedItem.setAttribute("material", "color:green");
           thumbstickReset = true;
           hoverActive(state.primitives[state.active], "color:green");
+          spawnHandles();
         }
         if(thumbstickReset && evt.detail.x > -0.95 && evt.detail.x < 0.95 && evt.detail.y > -0.95 && evt.detail.y < 0.95){
           thumbstickReset = false;
@@ -177,6 +178,17 @@ AFRAME.registerComponent('menu', {
       activeObj.setAttribute("scale", { x: 0.1, y: 0.1, z: 0.1 } );
       activeObj.setAttribute("material",material);
       hovering.appendChild(activeObj);
+    }
+
+    function spawnHandles(obj,material){
+      var hovering = document.querySelector('#hovering');
+      var activeObj = hovering.lastChild;
+      var xHandle = document.createElement("a-box");
+      xHandle.setAttribute("scale", { x: .5, y: 0.1, z: 0.1 } );
+      xHandle.setAttribute("material","color:blue");
+      xHandle.setAttribute("position",{ x: .5, y: 0, z: 0});
+      xHandle.id = "xHandle"
+      activeObj.appendChild(xHandle);
     }
 
     } 
