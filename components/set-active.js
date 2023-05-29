@@ -36,9 +36,14 @@ AFRAME.registerComponent('set-active', {
     });
     el.addEventListener('grab-end', function (evt) {
       console.log("remove obj")
-      grabbedObject.removeAttribute("dynamic-body")
-      grabbedObject.setAttribute("dynamic-body","")
-      grabbedObject=null;
+      if(document.getElementById("materialMenuContainer")){
+        document.getElementById("materialMenuContainer").remove();
+      }
+      if(!!grabbedObject){
+        grabbedObject.removeAttribute("dynamic-body")
+        grabbedObject.setAttribute("dynamic-body","")
+        grabbedObject=null;
+      }
     });
 
     } 

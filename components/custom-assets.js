@@ -8,12 +8,29 @@ AFRAME.registerComponent('custom-assets', {
         })
         .then(function (response) {
             console.log(response)
-            state.customImages= response.data;
+            var images = response.data;
+
+            if(images.length >=16){
+              state.customImages1=images.slice(0,15);
+              state.customImages2=images.slice(16,images.length);
+            } else {
+              state.customImages1 = images;
+            }
+
         })
         axios.get('https://192.168.20.162:5000/models/0', {
         })
         .then(function (response) {
-            state.customModels= response.data;
+            console.log(response)
+            var models = response.data;
+
+            if(models.length >=16){
+              state.customModels1=models.slice(0,15);
+              state.customModels2=models.slice(16,models.length);
+            } else {
+              state.customModels1 = models;
+            }
+
         })
     }
   });

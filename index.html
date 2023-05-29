@@ -151,16 +151,16 @@
     
     <a-sky id="background" src="#skyTexture" theta-length="90" radius="30"></a-sky>
 
-    <!-- Camera. -->
-    <a-entity camera wasd-controls
-                look-controls
-                id ="camera">
-                <a-entity>
-                  <a-entity id="lhand" mixin="touch" hand-controls="hand: left" strech></a-entity>
-                  <a-entity id="rhand"  mixin="touch" hand-controls="hand: right" blink-controls="button: trigger" spawn-entity menu></a-entity>
-                </a-entity>
-      </a-entity>
-      <a-box class="physicsBody" mixin="physicsBody" scale="0.1 0.1 0.1" position="0 0.6 0" material="color: red"></a-box>
+    <!-- camera rig -->
+    <a-entity id="player">
+      <!-- camera -->
+      <a-entity id="camera"  position="0 1 0" camera wasd-controls look-controls></a-entity>
+      <!-- hand controls -->
+      <a-entity id="lhand"  mixin="touch" hand-controls="hand:left" blink-controls="button: trigger; snapTurn: false" strech></a-entity>
+      <a-entity  id="rhand"  mixin="touch" hand-controls="hand: right" spawn-entity menu blink-controls="button: trigger; snapTurn: false"></a-entity>
+    </a-entity>
+
+      <a-box class="physicsBody" mixin="physicsBody" scale="1 1 1" position="0 0.6 0" material="color: red"></a-box>
 
     </a-scene>
 </body>

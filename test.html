@@ -1,27 +1,30 @@
 <head>
-  <title>My A-Frame Scene</title>
-  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
+  <title>My Cool A-Frame Scene</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-colorwheel-component/dist/aframe-colorwheel-component.min.js"></script>
+  <script type="text/javascript">
+     //Example of using the color wheel with events
+     AFRAME.registerComponent('color-listener', {
+       init: function(){
+         const el = this.el;
+         document.body.addEventListener('didchangecolor', function(evt){
+
+            //Available return formats from colorwheel
+            let style = evt.detail.style
+            let rgb = evt.detail.rgb
+            let hsv = evt.detail.hsv
+            let hex = evt.detail.hex
+
+            el.setAttribute('color', hex)
+         })
+       }
+     })
+  </script>
 </head>
 
 <body>
-<a-assets>
-
-  <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
-  <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg"></a-assets>
   <a-scene>
-    <a-cylinder id="ground" src="#groundTexture" radius="30" height="0.1"></a-cylinder>
-    <a-entity light="color: #FFF; intensity: 1.5" position="-1 2 0"></a-entity>
-    <a-entity light="type: ambient; color: #BBB"></a-entity>
-
-    <!-- camera rig -->
-    <a-entity id="player">
-      <!-- camera -->
-      <a-entity id="camera" camera wasd-controls look-controls></a-entity>
-      <!-- hand controls -->
-      <a-entity id="left-hand" oculus-touch-controls="hand: left" blink-controls></a-entity>
-      <a-entity id="right-hand" oculus-touch-controls="hand: right" blink-controls></a-entity>
-    </a-entity>
-    <a-box></a-box>
+    <a-entity colorwheel></a-entity>
+    <a-sky color="#6EBAA7" color-listener></a-sky>
   </a-scene>
 </body>

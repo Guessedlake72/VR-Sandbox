@@ -101,18 +101,63 @@ AFRAME.registerComponent('spawn-entity', {
       if(evt.detail.hasOwnProperty("id")  && evt.detail.id == 4){
         var state = this.sceneEl.getAttribute('gamestate');
         var rhand = document.querySelector('#rhand');
-        //var pos = (rhand.getAttribute('position'));
-        var activeObj = hovering.lastChild
-        var pos = activeObj.object3D.getWorldPosition(new THREE.Vector3())
-        var quaternion = activeObj.object3D.getWorldQuaternion(new THREE.Quaternion())
+        var pos = globalActiveObject.object3D.getWorldPosition(new THREE.Vector3())
+        var quaternion = globalActiveObject.object3D.getWorldQuaternion(new THREE.Quaternion())
         let rot = new THREE.Euler();
         rot.setFromQuaternion(quaternion);
-        spawnEntity(primitives[state.active],[pos['x'],pos['y'],pos['z']],0.1,rot,state.activeMaterial);
+        spawnFromActive(pos,rot);
       }
 
-
+ 
     })
+    function spawnFromActive(pos,rot){
+      var scene = document.querySelector('#scene');
+      var state = scene.getAttribute('gamestate');
+      var piece = document.createElement('a-entity');
+      
+      switch(state.activePage){
+        case 1:
+          var object = document.createElement(primitives[state.active])
+          object.setAttribute("material",state.materials[state.activeMaterial]);
+          piece.appendChild(object);
+          break;
+        case 2:
+          var object = document.createElement('a-image')
+          console.log(state.customImages1)
+          object.setAttribute("src",state.customImages1[state.active][0]);
+          object.setAttribute("width", 3);
+          object.setAttribute("height",3);
+          piece.appendChild(object);
+          break;
+        case 3:
+          var object = document.createElement('a-image')
+          object.setAttribute("src",state.customImages2[state.active][0]);
+          object.setAttribute("width", 3);
+          object.setAttribute("height",3);
+          piece.appendChild(object);
+          break;
+        case 4:
+          var bounding = document.createElement('a-box')
+          bounding.setAttribute("material", "transparent: true; opacity:0.0")
+          var object = document.createElement('a-entity')
+          object.setAttribute("gltf-model", state.customModels1[state.active][0]);
+          console.log(object);
+          var scale = state.customModels1[state.active][2]
+          object.setAttribute("position", {x:0, y:-.4, z:0});
+          object.setAttribute("scale", {x:scale/100, y:scale/100, z:scale/100});
+          bounding.appendChild(object);
+          piece.appendChild(bounding);
+          break;
+      }
 
+      piece.setAttribute('position',  { x: pos['x'], y: pos['y'], z: pos['z'] });
+      piece.object3D.rotation.set(rot['x'],rot['y'],rot['z']);
+      piece.setAttribute('scale', { x: 0.1, y: 0.1, z: 0.1 });
+      piece.setAttribute("class","physicsBody")
+      piece.setAttribute("mixin","physicsBody")
+      scene.appendChild(piece);
+
+    }
 
     function spawnEntity(obj,pos,scale,rot,material){
       var scene = document.querySelector('#scene');
