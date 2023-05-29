@@ -1,5 +1,5 @@
 var grabbedObject;
-
+var activeObject;
 AFRAME.registerSystem('gamestate', {
     // Initial state.
     schema: {
@@ -8,7 +8,8 @@ AFRAME.registerSystem('gamestate', {
        activeMaterial : {type: 'string', default: "color:red"},
        activeScale : {type: 'vec3', default: {x:1.0, y:1.0, z:1.0}},
        primitives: {type: 'array',default: ["a-box","a-sphere","a-cylinder","a-triangle","a-torus","a-cone","a-box","a-sphere","a-cylinder","a-triangle","a-torus","a-cone","a-cylinder","a-triangle"]},
-       srcs: {type: 'array'},
+       customImages: {type: 'array'},
+       customModels: {type: 'array'}
 
     },
   

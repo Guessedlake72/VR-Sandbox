@@ -107,7 +107,7 @@ AFRAME.registerComponent('spawn-entity', {
         var quaternion = activeObj.object3D.getWorldQuaternion(new THREE.Quaternion())
         let rot = new THREE.Euler();
         rot.setFromQuaternion(quaternion);
-        spawnEntity(primitives[state.active],[pos['x'],pos['y'],pos['z']],0.1,rot,materials[state.activeMaterial]);
+        spawnEntity(primitives[state.active],[pos['x'],pos['y'],pos['z']],0.1,rot,state.activeMaterial);
       }
 
 

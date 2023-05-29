@@ -3,22 +3,24 @@ AFRAME.registerComponent('strech', {
     init: function() {
       // Allows the use of "self" as "this" within the listener without binding.
       var self = this;
-      var active = false;
       var thumbstickReset = false;
       var el = this.el
-
       /*
       this.el.addEventListener('thumbstickmoved', function(evt) {
-        if(active && !thumbstickReset){
-          if(evt.detail.x < -0.95 && selected[0]!=1){
-            selected[0] = selected[0]-1;
-          }else if(evt.detail.x > 0.95 && selected[0]!=4){
-            selected[0] = selected[0]+1;
-          }else if(evt.detail.y < -0.95 && selected[1]!=4){
-            selected[1] = selected[1]+1;
-          }else if(evt.detail.y > 0.95 && selected[1]!=1){
-            selected[1] = selected[1]-1;
+        if(!thumbstickReset){
+          currentScale = grabbedObject.getAttribute('scale')
+          if(evt.detail.x < -0.95  && currentScale['x']>0.2){
+            grabbedObject.setAttribute("scale", { x: currentScale['x']-.1, y:currentScale['y'], z: currentScale['z'] } );
+
+          }else if(evt.detail.x > 0.95){
+            grabbedObject.setAttribute("scale", { x: currentScale['x']+.1, y:currentScale['y'], z: currentScale['z'] } );
+
+          }else if(evt.detail.y > 0.95 && currentScale['z']>0.2){
+            grabbedObject.setAttribute("scale", { x: currentScale['x'], y:currentScale['y'], z: currentScale['z']-.1 } );
+          }else if(evt.detail.y < -0.95){
+            grabbedObject.setAttribute("scale", { x: currentScale['x'], y:currentScale['y'], z: currentScale['z']+.1 } );
           }
+          thumbstickReset = true;
           
         }
         if(thumbstickReset && evt.detail.x > -0.95 && evt.detail.x < 0.95 && evt.detail.y > -0.95 && evt.detail.y < 0.95){
@@ -27,14 +29,7 @@ AFRAME.registerComponent('strech', {
         }
       });
       */
-     console.log("start component");
-     el.addEventListener('drag-start', function (evt) {
-      console.log("grabbed obj")
-      console.log(evt)
 
-    });
-    el.addEventListener('drag-end', function (evt) {
-    });
 
     } 
     

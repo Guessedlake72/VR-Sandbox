@@ -1,6 +1,3 @@
-/**
- * Set random color on material.
- */
  AFRAME.registerComponent('random-color', {
     dependencies: ['material'],
   
