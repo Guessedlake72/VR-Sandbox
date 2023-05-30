@@ -1,4 +1,3 @@
-var grabbedObject;
 var globalActiveObject;
 AFRAME.registerSystem('gamestate', {
     // Initial state.
@@ -14,6 +13,9 @@ AFRAME.registerSystem('gamestate', {
        customModels1: {type: 'array', default: []},
        customModels2: {type: 'array', default: []},
        activePage : {type: 'int', default: 1},
+       menuActive: {type: 'bool', default: false},
+       materialMenuActive: {type: 'bool', default: false}
+
     },
   
     init: function () {

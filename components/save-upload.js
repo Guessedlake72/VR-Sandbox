@@ -1,66 +1,44 @@
 AFRAME.registerComponent('save-upload', {
     init: function() {
-        axios.defaults.headers.common = {
-            "X-API-Key": "636af092e9a77f5984220834",  
-          };
-        window.addEventListener('keydown', function(e) {
-            if(e.code == "KeyL"){
-                var scene = document.querySelector('#scene');
-                var state = scene.getAttribute('gamestate');
-                console.log("sent state");
-                var statestr = "";
-                for (let i = 0; i < state.objs.length; i++) {
-                    statestr = statestr + ":"  + state.objs[i].toString()
-                }
-                axios.post("https://vrsandbox-62fc.restdb.io/rest/states", {
-                    state: statestr,
-                    userID: 1,
-                    timestamp: Date.now()
-            })
-            .then((response) => console.log(response.data))
-            .then((error) => console.log(error));
-            }
-            if(e.code == "KeyK"){
-                axios.get('https://vrsandbox-62fc.restdb.io/rest/states', {
-                    params: {
-                        "X-API-Key": "636af092e9a77f5984220834",  
-                    }
-                })
-                .then(function (response) {
-                    console.log(response);
-                    var index = -1;
-                    for (let i = 0; i < response.data.length; i++) {
-                        if(index == -1 || Date.parse(response.data[i]['timestamp'])>Date.parse(response.data[index]['timestamp'])){
-                            index = i;
-                        }
-                        obj = (response.data[index]['state'].split(':')).slice(1)
-                        console.log(response.data[index]['state'].split(':'));
-                        var scene = document.querySelector('#scene');
-                        scene.emit('changeState', {objs:obj});
-                        }
-                })
-            }
-            if(e.code == "KeyT"){
-                axios.get('https://vrsandbox-62fc.restdb.io/rest/assets', {
-                    params: {
-                        "X-API-Key": "636af092e9a77f5984220834",  
-                    }
-                })
-                .then(function (response) {
-                    console.log(response);
-                    var scene = document.querySelector('#scene');
-                    var state = scene.getAttribute('gamestate');
-                    var srcs = []
-                    for (let i = 0; i < response.data.length; i++) {
-                        if(response.data[i]["userID"] == 1){
-                            srcs.push(response.data[i]["src"]);
-                        }
-                    }
-                    state.srcs = srcs;
-                })
-            }
-        });
 
+        this.el.addEventListener('thumbstickdown', function(evt) {
+            const list = [];
+            const primitives = document.getElementsByClassName("primitive");
+            for(var i =0; i<primitives.length;i++){
+                obj = primitives[i];
+                color = obj.lastChild.getAttribute("material")['color']
+                pos = obj.getAttribute("position")
+                scale = obj.getAttribute("scale")
+                rotation = obj.getAttribute("rotation")
+                list.push(["primitive",obj.lastChild.tagName,"color:"+color,pos,scale,rotation]);
+            } 
+            const images = document.getElementsByClassName("customImage");
+            for(var i =0; i<images.length;i++){
+                obj = images[i];
+                src = obj.lastChild.getAttribute("src")
+                pos = obj.getAttribute("position")
+                scale = obj.getAttribute("scale")
+                rotation = obj.getAttribute("rotation")
+                list.push(["image",src,"None",pos,scale,rotation]);
+            }
+            const models = document.getElementsByClassName("customModel");
+            for(var i =0; i<models.length;i++){
+                obj = models[i];
+                gltf = obj.lastChild.lastChild.getAttribute("gltf-model")
+                pos = obj.getAttribute("position")
+                scale = obj.getAttribute("scale")
+                rotation = obj.getAttribute("rotation")
+                list.push(["model",gltf,"None",pos,scale,rotation]);
+            }
+            console.log(list)
+            var data = JSON.stringify(list);
+            axios.post("https://192.168.20.162:5000/saveworld/0", data, { 
+                headers: {
+                // Overwrite Axios's automatically set Content-Type
+                'Content-Type': 'application/json'
+              }});
+        });
+  
         
     }
 });

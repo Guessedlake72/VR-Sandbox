@@ -45,7 +45,6 @@ AFRAME.registerComponent('menu', {
               count = i;
             }
           }
-          console.log(count)
           state.active = count;
           let selectedItem = document.getElementById("menuitem_"+count);
           globalActiveObject = selectedItem.cloneNode(true)
@@ -61,7 +60,6 @@ AFRAME.registerComponent('menu', {
         }
         if(thumbstickReset && evt.detail.x > -0.95 && evt.detail.x < 0.95 && evt.detail.y > -0.95 && evt.detail.y < 0.95){
           thumbstickReset = false;
-          console.log("Reset")
         }
       });
 
@@ -210,7 +208,6 @@ AFRAME.registerComponent('menu', {
     function hoverActive(){
       var hovering = document.querySelector('#hovering');
       hovering.removeChild(hovering.lastChild);
-      console.log(hovering.children)
       if(state.activePage == 1){
         globalActiveObject.setAttribute("material", state.materials[state.activeMaterial] );
       }

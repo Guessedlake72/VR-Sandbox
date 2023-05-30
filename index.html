@@ -16,15 +16,13 @@
   <!--replace-->
   <script src="/components/custom-assets.js"></script>
   <!--replace-->
-  <script src="/components/natural-size.js"></script>
+  <script src="/components/load-world.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.1.0/dist/aframe-physics-system.js"></script>
   <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
   <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
   <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-  <script src="https://unpkg.com/aframe-proxy-event-component@2.1.0/dist/aframe-proxy-event-component.min.jss"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
   <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
   <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
@@ -156,12 +154,10 @@
       <!-- camera -->
       <a-entity id="camera"  position="0 1 0" camera wasd-controls look-controls></a-entity>
       <!-- hand controls -->
-      <a-entity id="lhand"  mixin="touch" hand-controls="hand:left" blink-controls="button: trigger; snapTurn: false" strech></a-entity>
-      <a-entity  id="rhand"  mixin="touch" hand-controls="hand: right" spawn-entity menu blink-controls="button: trigger; snapTurn: false"></a-entity>
+      <a-entity id="lhand"  mixin="touch" hand-controls="hand:left" load-world blink-controls="button: trigger; snapTurn: false" strech></a-entity>
+      <a-entity  id="rhand"  mixin="touch" hand-controls="hand: right" spawn-entity save-upload menu blink-controls="button: trigger; snapTurn: false"></a-entity>
     </a-entity>
 
-      <a-box class="physicsBody" mixin="physicsBody" scale="1 1 1" position="0 0.6 0" material="color: red"></a-box>
-
     </a-scene>
-</body>
+</body>  
 </html>

@@ -27,7 +27,6 @@ AFRAME.registerComponent('set-active', {
         }
       });
       */
-     console.log("start component");
      el.addEventListener('grab-start', function (evt) {
       console.log("grabbed obj")
       console.log(evt)
@@ -36,14 +35,17 @@ AFRAME.registerComponent('set-active', {
     });
     el.addEventListener('grab-end', function (evt) {
       console.log("remove obj")
-      if(document.getElementById("materialMenuContainer")){
+      if(document.getElementById("materialMenuContainer")){6
+        var state = this.sceneEl.getAttribute('gamestate');
         document.getElementById("materialMenuContainer").remove();
+        state.materialMenuActive=false
       }
       if(!!grabbedObject){
         grabbedObject.removeAttribute("dynamic-body")
         grabbedObject.setAttribute("dynamic-body","")
         grabbedObject=null;
       }
+
     });
 
     } 

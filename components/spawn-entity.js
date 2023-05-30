@@ -120,6 +120,7 @@ AFRAME.registerComponent('spawn-entity', {
           var object = document.createElement(primitives[state.active])
           object.setAttribute("material",state.materials[state.activeMaterial]);
           piece.appendChild(object);
+          piece.classList.add("primitive");
           break;
         case 2:
           var object = document.createElement('a-image')
@@ -128,6 +129,8 @@ AFRAME.registerComponent('spawn-entity', {
           object.setAttribute("width", 3);
           object.setAttribute("height",3);
           piece.appendChild(object);
+          piece.classList.add("customImage")
+
           break;
         case 3:
           var object = document.createElement('a-image')
@@ -135,6 +138,7 @@ AFRAME.registerComponent('spawn-entity', {
           object.setAttribute("width", 3);
           object.setAttribute("height",3);
           piece.appendChild(object);
+          piece.classList.add("customImage")
           break;
         case 4:
           var bounding = document.createElement('a-box')
@@ -147,13 +151,14 @@ AFRAME.registerComponent('spawn-entity', {
           object.setAttribute("scale", {x:scale/100, y:scale/100, z:scale/100});
           bounding.appendChild(object);
           piece.appendChild(bounding);
+          piece.classList.add("customModel")
           break;
       }
 
       piece.setAttribute('position',  { x: pos['x'], y: pos['y'], z: pos['z'] });
       piece.object3D.rotation.set(rot['x'],rot['y'],rot['z']);
       piece.setAttribute('scale', { x: 0.1, y: 0.1, z: 0.1 });
-      piece.setAttribute("class","physicsBody")
+      piece.classList.add("physicsBody")
       piece.setAttribute("mixin","physicsBody")
       scene.appendChild(piece);
 

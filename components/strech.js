@@ -5,14 +5,12 @@ AFRAME.registerComponent('strech', {
       var self = this;
       var thumbstickReset = false;
       var el = this.el
-      var active = false;
       var state = scene.getAttribute('gamestate');
       var selected = [1,1];
       const grid = [[1,1], [1,2],[1,3], [1,4],[2,1], [2,2],[2,3], [2,4],[3,1], [3,2],[3,3], [3,4],[4,1],[4,2],[4,3],[4,4]]
 
-      
       this.el.addEventListener('thumbstickmoved', function(evt) {
-        if(!active && !thumbstickReset && !!grabbedObject ){
+        if(!state.materialMenuActive && !thumbstickReset && !!grabbedObject ){
           currentScale = grabbedObject.getAttribute('scale')
           if(evt.detail.x < -0.95  && currentScale['x']>0.1){
             grabbedObject.setAttribute("scale", { x: currentScale['x']-.1, y:currentScale['y'], z: currentScale['z'] } );
@@ -25,7 +23,7 @@ AFRAME.registerComponent('strech', {
           }
           thumbstickReset = true;
           
-        } else if (active && !thumbstickReset && !!grabbedObject){
+        } else if (state.materialMenuActive && !thumbstickReset && !!grabbedObject){
           if(evt.detail.x < -0.95 && selected[0]!=1){
             selected[0] = selected[0]-1;
           }else if(evt.detail.x > 0.95 && selected[0]!=4){
@@ -72,13 +70,14 @@ AFRAME.registerComponent('strech', {
         toggleMaterialMenu()
     });
       this.el.addEventListener('xbuttondown', function(evt) {
-        const element = document.getElementById("removeCube");
-        element.remove();
+        grabbedObject.setAttribute("class", "test");
+        grabbedObject.setAttribute("visible", false)
+        grabbedObject.setAttribute("position",{x:999,y:-999,z:999})
     });
 
     function toggleMaterialMenu(){
-      if((!active || (!document.getElementById("materialMenuContainer"))) && !!grabbedObject && (state.activePage == 1)){
-        active = true;
+      if((!state.materialMenuActive || (!document.getElementById("materialMenuContainer"))) && !!grabbedObject && (state.activePage == 1)){
+        state.materialMenuActive = true;
           var scene = document.querySelector('#scene');
           var camera = document.querySelector('#camera');
           var menuContainer = document.createElement("a-entity");
@@ -119,7 +118,7 @@ AFRAME.registerComponent('strech', {
           
         }
           else{
-            active = false
+            state.materialMenuActive = false
             let menuContainer = document.getElementById("materialMenuContainer");
             menuContainer.remove();
           }
