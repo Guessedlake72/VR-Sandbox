@@ -1,30 +1,22 @@
-<head>
-  <title>My Cool A-Frame Scene</title>
-  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <script src="https://unpkg.com/aframe-colorwheel-component/dist/aframe-colorwheel-component.min.js"></script>
-  <script type="text/javascript">
-     //Example of using the color wheel with events
-     AFRAME.registerComponent('color-listener', {
-       init: function(){
-         const el = this.el;
-         document.body.addEventListener('didchangecolor', function(evt){
+<html>
+  <head>
+    <title>Basic</title>
+    <meta name="description" content="Showing in-VR logging using AFRAME.log and events."></meta>
+    <meta property="og:image" content="https://raw.githubusercontent.com/supermedium/superframe/master/components/log/examples/basic/preview.gif"></meta>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="./components/aframe-super-keyboard.min.js"></script>
 
-            //Available return formats from colorwheel
-            let style = evt.detail.style
-            let rgb = evt.detail.rgb
-            let hsv = evt.detail.hsv
-            let hex = evt.detail.hex
+  </head>
+  <body>
+    <a-scene environment="preset: contact; skyColor: #112214; horizonColor: #478d54; ground: hills; groundTexture: checkerboard; groundColor: #4f3e4b; groundColor2: #4d3c47; dressing: none; grid: none">
 
-            el.setAttribute('color', hex)
-         })
-       }
-     })
-  </script>
-</head>
+      <a-entity id="hand" laser-controls="hand: right">
+        <a-sphere radius="0.03"></a-sphere>
+      </a-entity>
 
-<body>
-  <a-scene>
-    <a-entity colorwheel></a-entity>
-    <a-sky color="#6EBAA7" color-listener></a-sky>
-  </a-scene>
-</body>
+      <!-- Change hand to `#hand` for VR. -->
+      <a-entity id="keyboard" super-keyboard="hand: #hand; imagePath:./assets/keyboard/" position="0 1.076 -0.5" rotation="-30 0 0"></a-entity>
+    </a-scene>
+
+  </body>
+</html>

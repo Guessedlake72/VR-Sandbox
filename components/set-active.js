@@ -36,15 +36,16 @@ AFRAME.registerComponent('set-active', {
     el.addEventListener('grab-end', function (evt) {
       console.log("remove obj")
       if(document.getElementById("materialMenuContainer")){6
+        lhand = document.getElementById("lhand")
+        lhand.setAttribute("blink-controls","button: trigger;")
         var state = this.sceneEl.getAttribute('gamestate');
         document.getElementById("materialMenuContainer").remove();
         state.materialMenuActive=false
       }
-      if(!!grabbedObject){
-        grabbedObject.removeAttribute("dynamic-body")
-        grabbedObject.setAttribute("dynamic-body","")
-        grabbedObject=null;
-      }
+
+      el.removeAttribute("dynamic-body")
+      el.setAttribute("dynamic-body","")
+      grabbedObject=null;
 
     });
 

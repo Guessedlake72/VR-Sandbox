@@ -8,7 +8,7 @@ AFRAME.registerComponent('spawn-entity', {
   // Init lifecycle method fires upon initialization of component.
   init: function() {
 
-    const materials = ["color: red","color: green","color: blue","transparent: true"]
+    //const materials = ["color: red","color: green","color: blue","transparent: true"]
     var src = ["https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80,","https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Ym9va3xlbnwwfHwwfHw%3D&w=1000&q=80","https://images.unsplash.com/photo-1495344517868-8ebaf0a2044a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80"]
     // Allows the use of "self" as "this" within the listener without binding.
     var self = this;
@@ -117,9 +117,12 @@ AFRAME.registerComponent('spawn-entity', {
       
       switch(state.activePage){
         case 1:
+          var bounding = document.createElement('a-box')
+          bounding.setAttribute("material", "transparent: true; opacity:0.0;")
           var object = document.createElement(primitives[state.active])
           object.setAttribute("material",state.materials[state.activeMaterial]);
-          piece.appendChild(object);
+          bounding.appendChild(object);
+          piece.appendChild(bounding);
           piece.classList.add("primitive");
           break;
         case 2:
@@ -170,29 +173,10 @@ AFRAME.registerComponent('spawn-entity', {
       var camera = document.querySelector('#camera');
       var piece = document.createElement('a-entity');
       
-      if(obj == 'frame') {
-        var frame = document.createElement('a-gltf-model');
-          var activeMaterial = state.activeMaterial;
-          frame.setAttribute("src","https://guessedlake72.github.io/VR-Sandbox/assets/scene.gltf");
-          frame.setAttribute("position",{ x: 1, y: 0, z: -.06 });
-          frame.setAttribute("scale", { x: 0.01, y: 0.01, z: 0.01 } );
-          frame.setAttribute("rotation", { x: 0, y: 270, z: 0 } );
+      var object = document.createElement(obj)
+      object.setAttribute("material",material);
+      piece.appendChild(object);
 
-        var image = document.createElement('a-image');
-        console.log(state.srcs)
-        src = state.srcs;
-        image.setAttribute("src", src[activeMaterial])
-        image.setAttribute("height","2.1")
-        image.setAttribute("width","1.6")
-        image.setAttribute("position","0 1.25 0")
-        piece.appendChild(frame);
-        piece.appendChild(image);
-
-      } else {
-        var object = document.createElement(obj)
-        object.setAttribute("material",material);
-        piece.appendChild(object);
-      }
       piece.setAttribute('position',  { x: pos[0], y: pos[1], z: pos[2] });
       console.log(rot)
       piece.object3D.rotation.set(rot['x'],rot['y'],rot['z']);

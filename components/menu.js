@@ -84,41 +84,33 @@ AFRAME.registerComponent('menu', {
         }else if(e.code == "ArrowDown" && selected[1]!=1){
           selected[1] = selected[1]-1;
         }
-          if(document.getElementById("selectionbox")){
-            document.getElementById("selectionbox").remove();
+     
+        if(document.getElementById("selectionbox")){
+          document.getElementById("selectionbox").remove();
+        }
+        let prevSelectedItem = document.getElementById("menuitem_"+state.active);
+        //prevSelectedItem.setAttribute("material", "color:red");
+        var count = -1;
+        for(let i =0; i<grid.length; i++){
+          if(grid[i][0] == selected[0] && grid[i][1] == selected[1]){
+            count = i;
           }
-          var state = scene.getAttribute('gamestate');
-          let prevSelectedItem = document.getElementById("menuitem_"+state.active);
-          //prevSelectedItem.setAttribute("material", "color:red");
-          var count = -1;
-          for(let i =0; i<grid.length; i++){
-            if(grid[i][0] == selected[0] && grid[i][1] == selected[1]){
-              count = i;
-            }
-          }
-          console.log(count)
-          state.active = count;
-          let selectedItem = document.getElementById("menuitem_"+count);
-          //selectedItem.setAttribute("material", "color:green");
-          var selectionBox = document.createElement("a-box");
-          selectionBox.setAttribute("material", "transparent: true; opacity:0.5; color:green")
-          selectionBox.setAttribute("scale", {x:2, y:2, z:2})
-          selectionBox.id="selectionbox";
-          selectionBox.setAttribute("position", {x:selected[0]*3, y:selected[1]*3, z:0})
-          menuContainer = document.getElementById("menucontainer")
-          menuContainer.appendChild(selectionBox);
-          thumbstickReset = true;
-          hoverActive();
+        }
+        state.active = count;
+        let selectedItem = document.getElementById("menuitem_"+count);
+        globalActiveObject = selectedItem.cloneNode(true)
+        var selectionBox = document.createElement("a-box");
+        selectionBox.setAttribute("material", "transparent: true; opacity:0.5; color:green")
+        selectionBox.setAttribute("scale", {x:2, y:2, z:2})
+        selectionBox.id="selectionbox";
+        selectionBox.setAttribute("position", {x:selected[0]*3, y:selected[1]*3, z:0})
+        menuContainer = document.getElementById("menucontainer")
+        menuContainer.appendChild(selectionBox);
+        thumbstickReset = true;
+        hoverActive();
       }
       }
       );
-
-
-      this.el.addEventListener('bbuttondown', function(evt) {
-          toggleMenu() 
-          console.log(globalActiveObject)
-          console.log(globalActiveObject.object3D.getWorldPosition(new THREE.Vector3()))
-      });
 
       window.addEventListener('keydown', function(e) {
         if(e.code == "KeyE"){

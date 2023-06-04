@@ -17,6 +17,12 @@
   <script src="/components/custom-assets.js"></script>
   <!--replace-->
   <script src="/components/load-world.js"></script>
+  <!--replace-->
+  <script src="/components/aframe-super-keyboard.min.js"></script>
+  <!--replace-->
+  <script src="/components/test.js"></script>
+  <!--replace-->
+  <script src="/components/login.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.1.0/dist/aframe-physics-system.js"></script>
   <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
@@ -27,6 +33,10 @@
   <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
   <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
+  <script src="https://unpkg.com/aframe-log-component/dist/aframe-log-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.3.2/dist/aframe-environment-component.min.js"></script>
+
+
 
 <script>
         AFRAME.registerComponent('phase-shift', {
@@ -42,19 +52,20 @@
       })
 </script>
 <script>
-  AFRAME.registerComponent('stay', {
-  init: function () {
-    console.log("start")
-    var el = this.el
-    el.addEventListener('drag-start	', function () {
-      console.log("setting damping")
-      el.setAttribute('dynamic-body', {linearDamping: 0.01, angularDamping: 0.01})
+  AFRAME.registerComponent('cloak', {
+    init: function() {
+      this.el.addEventListener('model-loaded', e=>{
+    let mesh = this.el.getObject3D('mesh') // grab the mesh
+    if (mesh === undefined) return;        // return if no mesh :(
+    mesh.traverse(function(node) {         // traverse through and apply settings
+      if (node.isMesh && node.material) {  // make sure the element can be a cloak
+        node.material.colorWrite = false
+        node.material.needsUpdate = true;
+      }
     });
-    el.addEventListener('drag-end	', function () {
-      el.setAttribute('dynamic-body', {linearDamping: 1.0, angularDamping: 1.0})
-    });
-  }
-});
+    })
+    }
+})
 </script>
 
   <script id="plane" type="text/html">
@@ -72,11 +83,22 @@
 
 </head>
 <body>
-  <a-scene custom-assets gamestate physics="gravity: 0; friction:0.5" save-upload id="scene" >
+  <a-scene custom-assets gamestate physics="gravity: 0; friction:0.5" id="scene" >
     <a-assets>
       <img id="picture" src="https://browserstack.wpenginepowered.com/wp-content/uploads/2021/03/resp-design-mode-700x550.png">
       <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
       <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg">
+      <!--replace-->
+      <a-asset-item id="room" src="/assets/room/scene.gltf"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="duck" src="/assets/glb/Duck.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="toycar" src="/assets/toycar/ToyCar.gltf"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="galleryRoom" src="/assets/galleryRoom/vr_gallery1mb.glb"></a-asset-item>
+
+      <a-asset-item id="optimerBoldFont" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
+
       <a-mixin id="pointer" raycaster="showLine: true; objects: .cube, a-link"
       super-hands="colliderEvent: raycaster-intersection;
                    colliderEventProperty: els;
@@ -132,32 +154,21 @@
       </a-mixin>
       <a-mixin id="movable"
         hoverable grabbable stretchable draggable droppable></a-mixin>
-      <!--replace-->
-      <a-asset-item id="room" src="/assets/room/scene.gltf"></a-asset-item>
-      <!--replace-->
-      <a-asset-item id="duck" src="/assets/glb/Duck.glb"></a-asset-item>
-      <!--replace-->
-      <a-asset-item id="toycar" src="/assets/toycar/ToyCar.gltf"></a-asset-item>
-      
 
     </a-assets>
-    <a-cylinder id="ground" src="#groundTexture" radius="30" height="0.1"></a-cylinder>
-    <a-entity light="color: #FFF; intensity: 1.5" position="-1 2 0"></a-entity>
-    <a-entity light="type: ambient; color: #BBB"></a-entity>
+    <a-entity environment ="preset: forest"></a-entity>
 
-    <a-entity gltf-model="#room" scale=".35 .35 .35" position="-3 .7 0"></a-entity>
-    
-    <a-sky id="background" src="#skyTexture" theta-length="90" radius="30"></a-sky>
+    <a-entity gltf-model="#galleryRoom" scale="1 1 1" position="-3 0.1 0"></a-entity>
+    <a-entity log geometry="primitive: plane" material="color: #111" text="color: lightgreen" position="0 2 -4"></a-entity>
 
     <!-- camera rig -->
     <a-entity id="player">
       <!-- camera -->
-      <a-entity id="camera"  position="0 1 0" camera wasd-controls look-controls></a-entity>
+      <a-entity id="camera"  position="0 1 0" login camera wasd-controls look-controls></a-entity>
       <!-- hand controls -->
-      <a-entity id="lhand"  mixin="touch" hand-controls="hand:left" load-world blink-controls="button: trigger; snapTurn: false" strech></a-entity>
+      <a-box material="color:red" class="collidable"></a-box>
       <a-entity  id="rhand"  mixin="touch" hand-controls="hand: right" spawn-entity save-upload menu blink-controls="button: trigger; snapTurn: false"></a-entity>
     </a-entity>
-
     </a-scene>
 </body>  
 </html>

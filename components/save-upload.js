@@ -1,16 +1,17 @@
 AFRAME.registerComponent('save-upload', {
     init: function() {
+        var state = scene.getAttribute('gamestate');
 
         this.el.addEventListener('thumbstickdown', function(evt) {
             const list = [];
             const primitives = document.getElementsByClassName("primitive");
             for(var i =0; i<primitives.length;i++){
                 obj = primitives[i];
-                color = obj.lastChild.getAttribute("material")['color']
+                color = obj.lastChild.lastChild.getAttribute("material")['color']
                 pos = obj.getAttribute("position")
                 scale = obj.getAttribute("scale")
                 rotation = obj.getAttribute("rotation")
-                list.push(["primitive",obj.lastChild.tagName,"color:"+color,pos,scale,rotation]);
+                list.push(["primitive",obj.lastChild.lastChild.tagName,"color:"+color,pos,scale,rotation]);
             } 
             const images = document.getElementsByClassName("customImage");
             for(var i =0; i<images.length;i++){
@@ -25,14 +26,15 @@ AFRAME.registerComponent('save-upload', {
             for(var i =0; i<models.length;i++){
                 obj = models[i];
                 gltf = obj.lastChild.lastChild.getAttribute("gltf-model")
+                modelscale = obj.lastChild.lastChild.getAttribute("scale")
                 pos = obj.getAttribute("position")
                 scale = obj.getAttribute("scale")
                 rotation = obj.getAttribute("rotation")
-                list.push(["model",gltf,"None",pos,scale,rotation]);
+                list.push(["model",gltf,modelscale,pos,scale,rotation]);
             }
             console.log(list)
             var data = JSON.stringify(list);
-            axios.post("https://192.168.20.162:5000/saveworld/0", data, { 
+            axios.post("https://192.168.20.162:5000/saveworld/"+state.activeUser+"/"+state.activeWorld, data, { 
                 headers: {
                 // Overwrite Axios's automatically set Content-Type
                 'Content-Type': 'application/json'

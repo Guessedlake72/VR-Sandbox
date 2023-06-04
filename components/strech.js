@@ -55,7 +55,7 @@ AFRAME.registerComponent('strech', {
           menuContainer = document.getElementById("materialMenuContainer")
           menuContainer.appendChild(selectionBox);
           thumbstickReset = true;
-          grabbedObject.lastChild.setAttribute("material", state.materials[state.activeMaterial])
+          grabbedObject.lastChild.lastChild.setAttribute("material", state.materials[state.activeMaterial])
           hoverMaterial()
           console.log(grabbedObject);
         }
@@ -77,7 +77,9 @@ AFRAME.registerComponent('strech', {
 
     function toggleMaterialMenu(){
       if((!state.materialMenuActive || (!document.getElementById("materialMenuContainer"))) && !!grabbedObject && (state.activePage == 1)){
-        state.materialMenuActive = true;
+          lhand = document.getElementById("lhand")
+          lhand.setAttribute("blink-controls","button: trigger; snapTurn: false")          
+          state.materialMenuActive = true;
           var scene = document.querySelector('#scene');
           var camera = document.querySelector('#camera');
           var menuContainer = document.createElement("a-entity");
@@ -118,6 +120,8 @@ AFRAME.registerComponent('strech', {
           
         }
           else{
+            lhand = document.getElementById("lhand")
+            lhand.setAttribute("blink-controls","button: trigger;")     
             state.materialMenuActive = false
             let menuContainer = document.getElementById("materialMenuContainer");
             menuContainer.remove();
@@ -126,7 +130,7 @@ AFRAME.registerComponent('strech', {
 
     }   
      function hoverMaterial(){
-      globalActiveObject.setAttribute("material", state.materials[state.activeMaterial] );
+      globalActiveObject.setAttribute("material", state.materials[state.activeMaterial]);
     }
 
       
