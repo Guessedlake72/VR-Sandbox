@@ -32,6 +32,19 @@ AFRAME.registerComponent('save-upload', {
                 rotation = obj.getAttribute("rotation")
                 list.push(["model",gltf,modelscale,pos,scale,rotation]);
             }
+            const text = document.getElementsByClassName("customText");
+            for(var i =0; i<text.length;i++){
+                obj = text[i]
+                nodes = obj.lastChild.childNodes;
+                title = nodes[1].getAttribute("text").value
+                console.log(title)
+                desc = nodes[2].getAttribute("text").value
+                console.log(desc)
+                pos = obj.getAttribute("position")
+                scale = obj.getAttribute("scale")
+                rotation = obj.getAttribute("rotation")
+                list.push(["text",title,desc,pos,scale,rotation]);
+            }
             console.log(list)
             var data = JSON.stringify(list);
             axios.post("https://192.168.20.162:5000/saveworld/"+state.activeUser+"/"+state.activeWorld, data, { 

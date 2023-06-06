@@ -39,12 +39,27 @@ AFRAME.registerComponent('load-world', {
                     bounding.appendChild(object);
                     piece.appendChild(bounding)
                     piece.classList.add("customModel")
+                } else if (obj[0] == 'text'){
+                    var bounding = document.createElement('a-box')
+                    bounding.setAttribute("material", "transparent: true; opacity:0.0")
+                    var title = document.createElement("a-entity");
+                    title.setAttribute("text", "value: "+ obj[1]+"; color: black");
+                    title.setAttribute("scale", {x:5, y:5, z:5});
+                    title.setAttribute("position", {x:.5, y:1, z:.1});
+                    bounding.appendChild(title);
+                    var text = document.createElement("a-entity");
+                    text.setAttribute("text", "value: "+obj[2] + "; color: black");
+                    text.setAttribute("scale", {x:3, y:3, z:3});
+                    text.setAttribute("position", {x:0, y:0, z:.1});
+                    bounding.appendChild(text);
+                    piece.appendChild(bounding)
+                    piece.classList.add("customText")
                 }
                 piece.setAttribute('position',  obj[3]);
                 piece.setAttribute('scale', obj[4]);
                 piece.setAttribute('rotation',obj[5]);
-                piece.classList.add("physicsBody")
-                piece.setAttribute("mixin","physicsBody")
+                //piece.classList.add("physicsBody")
+                //piece.setAttribute("mixin","physicsBody")
                 scene.appendChild(piece);
             }
         })

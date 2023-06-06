@@ -9,6 +9,36 @@ AFRAME.registerComponent('strech', {
       var selected = [1,1];
       const grid = [[1,1], [1,2],[1,3], [1,4],[2,1], [2,2],[2,3], [2,4],[3,1], [3,2],[3,3], [3,4],[4,1],[4,2],[4,3],[4,4]]
 
+      this.el.addEventListener('thumbstickdown', function(evt) {
+          if(!!grabbedObject && (grabbedObject.classList.contains("customImage") || grabbedObject.classList.contains("customModel"))){
+            console.log(grabbedObject);
+            var bounding = document.createElement('a-box')
+            bounding.setAttribute("material", "transparent: true; opacity:0.0")
+            var background = document.createElement("a-entity");
+            background.setAttribute("geometry",{primitive: "plane",
+                height: 3,
+                width: 4});
+            background.setAttribute("material",{shader: "flat"});
+            bounding.appendChild(background);
+
+            var title = document.createElement("a-entity");
+            title.setAttribute("text", "value: "+ grabbedObject.lastChild.getAttribute("title")+"; color: black");
+            title.setAttribute("scale", {x:5, y:5, z:5});
+            title.setAttribute("position", {x:.5, y:1, z:.1});
+            bounding.appendChild(title);
+            var text = document.createElement("a-entity");
+            text.setAttribute("text", "value: "+grabbedObject.lastChild.getAttribute("desc") + "; color: black");
+            text.setAttribute("scale", {x:3, y:3, z:3});
+            text.setAttribute("position", {x:0, y:0, z:.1});
+            bounding.appendChild(text);
+            grabbedObject.lastChild.remove()
+            grabbedObject.appendChild(bounding);
+            grabbedObject.classList.remove("customImage")
+            grabbedObject.classList.remove("customModel")   
+            grabbedObject.classList.add("customText")
+          }
+      });
+
       this.el.addEventListener('thumbstickmoved', function(evt) {
         if(!state.materialMenuActive && !thumbstickReset && !!grabbedObject ){
           currentScale = grabbedObject.getAttribute('scale')

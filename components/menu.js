@@ -9,7 +9,7 @@ AFRAME.registerComponent('menu', {
       var active = false;
       var selected = [1,1];
       var thumbstickReset = false;
-      const pageTitles = ["Primitives","Images1","Images2","Models"]
+      const pageTitles = ["Primitives","Built In","Images1","Images2","Models"]
       var state = scene.getAttribute('gamestate');
 
       this.el.addEventListener('thumbstickmoved', function(evt) {
@@ -98,7 +98,9 @@ AFRAME.registerComponent('menu', {
         }
         state.active = count;
         let selectedItem = document.getElementById("menuitem_"+count);
-        globalActiveObject = selectedItem.cloneNode(true)
+        if(!!selectedItem){
+          globalActiveObject = selectedItem.cloneNode(true);
+        }
         var selectionBox = document.createElement("a-box");
         selectionBox.setAttribute("material", "transparent: true; opacity:0.5; color:green")
         selectionBox.setAttribute("scale", {x:2, y:2, z:2})
@@ -111,6 +113,10 @@ AFRAME.registerComponent('menu', {
       }
       }
       );
+
+      this.el.addEventListener('bbuttondown', function(evt) {
+        toggleMenu() 
+    });
 
       window.addEventListener('keydown', function(e) {
         if(e.code == "KeyE"){
@@ -156,8 +162,19 @@ AFRAME.registerComponent('menu', {
               item.setAttribute("material", "color:red");
               item.id = "menuitem_"+i;
               menuContainer.appendChild(item);
-              }
+              } 
           }else if (state.activePage == 2){
+            var builtin = state.builtIn;
+            for (let i = 0; i < builtin.length; i++) {
+              var item = document.createElement("a-entity");
+              var gridlocation = grid[i]
+              item.setAttribute("position",{ x: gridlocation[0]*3, y:  gridlocation[1]*3, z: 0 })
+              item.setAttribute("gltf-model", builtin[i][0]);
+              item.setAttribute("scale", {x:builtin[i][1]/100, y:builtin[i][1]/100, z:builtin[i][1]/100});
+              item.id = "menuitem_"+i;
+              menuContainer.appendChild(item);
+              } 
+          }else if (state.activePage == 3){
             var images1 = state.customImages1;
             for (let i = 0; i < images1.length; i++) {
               var item = document.createElement("a-image");
@@ -169,14 +186,14 @@ AFRAME.registerComponent('menu', {
               item.id = "menuitem_"+i;
               menuContainer.appendChild(item);
               } 
-          }else if (state.activePage == 4){
+          }else if (state.activePage == 5){
             var models1 = state.customModels1;
             for (let i = 0; i < models1.length; i++) {
               var item = document.createElement("a-entity");
               var gridlocation = grid[i]
               item.setAttribute("position",{ x: gridlocation[0]*3, y:  gridlocation[1]*3, z: 0 })
               item.setAttribute("gltf-model", models1[i][0]);
-              item.setAttribute("scale", {x:models1[i][2]/100, y:models1[i][2]/100, z:models1[i][2]/100});
+              item.setAttribute("scale", {x:models1[i][1]/100, y:models1[i][1]/100, z:models1[i][1]/100});
               item.id = "menuitem_"+i;
               menuContainer.appendChild(item);
               } 

@@ -9,7 +9,6 @@ AFRAME.registerComponent('spawn-entity', {
   init: function() {
 
     //const materials = ["color: red","color: green","color: blue","transparent: true"]
-    var src = ["https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80,","https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Ym9va3xlbnwwfHwwfHw%3D&w=1000&q=80","https://images.unsplash.com/photo-1495344517868-8ebaf0a2044a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80"]
     // Allows the use of "self" as "this" within the listener without binding.
     var self = this;
     var dragging = false;
@@ -126,16 +125,30 @@ AFRAME.registerComponent('spawn-entity', {
           piece.classList.add("primitive");
           break;
         case 2:
+          var bounding = document.createElement('a-box')
+          bounding.setAttribute("material", "transparent: true; opacity:0.0")
+          var object = document.createElement('a-entity')
+          object.setAttribute("gltf-model", state.builtIn[state.active][0]);
+          console.log(object);
+          var scale = state.builtIn[state.active][1]
+          object.setAttribute("position", {x:0, y:-.4, z:0});
+          object.setAttribute("scale", {x:scale/100, y:scale/100, z:scale/100});
+          bounding.appendChild(object);
+          piece.appendChild(bounding);
+          piece.classList.add("builtIn")
+          break;
+        case 3:
           var object = document.createElement('a-image')
           console.log(state.customImages1)
           object.setAttribute("src",state.customImages1[state.active][0]);
           object.setAttribute("width", 3);
           object.setAttribute("height",3);
+          object.setAttribute("title",state.customImages1[state.active][2]);
+          object.setAttribute("desc",state.customImages1[state.active][3]);
           piece.appendChild(object);
           piece.classList.add("customImage")
-
           break;
-        case 3:
+        case 4:
           var object = document.createElement('a-image')
           object.setAttribute("src",state.customImages2[state.active][0]);
           object.setAttribute("width", 3);
@@ -143,15 +156,17 @@ AFRAME.registerComponent('spawn-entity', {
           piece.appendChild(object);
           piece.classList.add("customImage")
           break;
-        case 4:
+        case 5:
           var bounding = document.createElement('a-box')
           bounding.setAttribute("material", "transparent: true; opacity:0.0")
           var object = document.createElement('a-entity')
           object.setAttribute("gltf-model", state.customModels1[state.active][0]);
           console.log(object);
-          var scale = state.customModels1[state.active][2]
+          var scale = state.customModels1[state.active][1]
           object.setAttribute("position", {x:0, y:-.4, z:0});
           object.setAttribute("scale", {x:scale/100, y:scale/100, z:scale/100});
+          bounding.setAttribute("title",state.customModels1[state.active][2]);
+          bounding.setAttribute("desc",state.customModels1[state.active][3]);
           bounding.appendChild(object);
           piece.appendChild(bounding);
           piece.classList.add("customModel")

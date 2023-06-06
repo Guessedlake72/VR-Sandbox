@@ -32,6 +32,18 @@ AFRAME.registerComponent('login', {
             if(hoverObject == "newWorld"){
                 displayPage(2);
                 hoverObject="";
+            }else if(hoverObject == "preset1"){
+                roomModel = document.createElement('a-entity');
+                roomModel.setAttribute("gltf-model","#galleryRoom")
+                roomModel.setAttribute("scale","1 1 1")
+                roomModel.setAttribute("position","-3 0.1 0")
+                scene.appendChild(roomModel)
+                player.lastChild.remove();
+                player.appendChild(grabHand);
+                document.getElementById("loginMenuContainer").remove();
+            }else if(hoverObject == "newWorld"){
+                displayPage(2);
+                hoverObject="";
             }
             else if(hoverObject != ""){
                 state.activeWorld = hoverObject;
@@ -39,9 +51,7 @@ AFRAME.registerComponent('login', {
                 .then(function (response) {
                 console.log(response);
                 objects = response.data;
-                var scene = document.querySelector('#scene');
-                var state = scene.getAttribute('gamestate');
-                
+  
                 for(var i = 0; i < objects.length; i++){
                     var piece = document.createElement('a-entity');
                     obj = objects[i];
@@ -72,6 +82,27 @@ AFRAME.registerComponent('login', {
                         bounding.appendChild(object);
                         piece.appendChild(bounding)
                         piece.classList.add("customModel")
+                    }   else if (obj[0] == 'text'){
+                        var bounding = document.createElement('a-box')
+                        bounding.setAttribute("material", "transparent: true; opacity:0.0")
+                        var background = document.createElement("a-entity");
+                        background.setAttribute("geometry",{primitive: "plane",
+                            height: 3,
+                            width: 4});
+                        background.setAttribute("material",{shader: "flat"});
+                        bounding.appendChild(background);
+                        var title = document.createElement("a-entity");
+                        title.setAttribute("text", "value: "+ obj[1]+"; color: black");
+                        title.setAttribute("scale", {x:5, y:5, z:5});
+                        title.setAttribute("position", {x:.5, y:1, z:.1});
+                        bounding.appendChild(title);
+                        var text = document.createElement("a-entity");
+                        text.setAttribute("text", "value: "+obj[2] + "; color: black");
+                        text.setAttribute("scale", {x:3, y:3, z:3});
+                        text.setAttribute("position", {x:0, y:0, z:.1});
+                        bounding.appendChild(text);
+                        piece.appendChild(bounding)
+                        piece.classList.add("customText")
                     }
                     piece.setAttribute('position',  obj[3]);
                     piece.setAttribute('scale', obj[4]);
@@ -199,18 +230,24 @@ AFRAME.registerComponent('login', {
                     image.setAttribute("src", '../assets/thumbnails/gallery.png')
                     image.setAttribute("width", 3);
                     image.setAttribute("height",3);
-                    image.setAttribute("position","5 8 0")
+                    image.setAttribute("position","4 8 .3")
                     image.setAttribute("class","collidable")
                     image.id = "preset1"
                     menuContainer.appendChild(image)
-                    image2 = image.cloneNode(true);
+                    image2 = document.createElement("a-image");
                     image2.setAttribute("src", '../assets/thumbnails/shop.png')
-                    image2.setAttribute("position","10 8 0")
+                    image2.setAttribute("position","8.5 8 .3")
+                    image2.setAttribute("width", 3);
+                    image2.setAttribute("height",3);
+                    image2.setAttribute("class","collidable")
                     image2.id = "preset2"
                     menuContainer.appendChild(image2)
-                    image3 = image.cloneNode(true);
+                    image3 = document.createElement("a-image");
                     image3.setAttribute("src", '../assets/thumbnails/open.png')
-                    image3.setAttribute("position"," 13 0")
+                    image3.setAttribute("position","13 8 .3")
+                    image3.setAttribute("width", 3);
+                    image3.setAttribute("height",3);
+                    image3.setAttribute("class","collidable")
                     image3.id = "preset3"
                     menuContainer.appendChild(image3)
                     break;

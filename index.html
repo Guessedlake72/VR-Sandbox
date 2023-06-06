@@ -31,7 +31,6 @@
   <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
   <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
-  <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
   <script src="https://unpkg.com/aframe-log-component/dist/aframe-log-component.min.js"></script>
   <script src="https://unpkg.com/aframe-environment-component@1.3.2/dist/aframe-environment-component.min.js"></script>
@@ -50,22 +49,6 @@
           })
         }
       })
-</script>
-<script>
-  AFRAME.registerComponent('cloak', {
-    init: function() {
-      this.el.addEventListener('model-loaded', e=>{
-    let mesh = this.el.getObject3D('mesh') // grab the mesh
-    if (mesh === undefined) return;        // return if no mesh :(
-    mesh.traverse(function(node) {         // traverse through and apply settings
-      if (node.isMesh && node.material) {  // make sure the element can be a cloak
-        node.material.colorWrite = false
-        node.material.needsUpdate = true;
-      }
-    });
-    })
-    }
-})
 </script>
 
   <script id="plane" type="text/html">
@@ -89,22 +72,27 @@
       <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
       <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg">
       <!--replace-->
-      <a-asset-item id="room" src="/assets/room/scene.gltf"></a-asset-item>
+      <a-asset-item id="galleryRoom" src="/assets/galleryRoom/vr_gallery1mb.glb"></a-asset-item>
       <!--replace-->
       <a-asset-item id="duck" src="/assets/glb/Duck.glb"></a-asset-item>
       <!--replace-->
       <a-asset-item id="toycar" src="/assets/toycar/ToyCar.gltf"></a-asset-item>
       <!--replace-->
-      <a-asset-item id="galleryRoom" src="/assets/galleryRoom/vr_gallery1mb.glb"></a-asset-item>
+      <a-asset-item id="display_case" src="/assets/glb/display_case.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="modern_bench" src="/assets/glb/modern_bench.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="sofa" src="/assets/glb/sofa.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="plant" src="/assets/glb/palm_plant.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="picture_frame" src="/assets/glb/picture_frame.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="stand" src="/assets/glb/stand.glb"></a-asset-item>
 
-      <a-asset-item id="optimerBoldFont" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
 
-      <a-mixin id="pointer" raycaster="showLine: true; objects: .cube, a-link"
-      super-hands="colliderEvent: raycaster-intersection;
-                   colliderEventProperty: els;
-                   colliderEndEvent:raycaster-intersection-cleared;
-                   colliderEndEventProperty: clearedEls;">
-      </a-mixin>
+
+
       <a-mixin id="controllerhands" 
       super-hands="grabStartButtons: gripdown;
                    grabEndButtons: gripup; 
@@ -137,36 +125,24 @@
                    dragDropStartButtons: gripdown, ybuttondown; 
                    dragDropEndButtons: gripdown, ybuttonup">
       </a-mixin>
-      <a-mixin id="voxel"
-         geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5"
-         material="shader: standard"
-         random-color
-         snap="offset: 0.25 0.25 0.25; snap: 0.5 0.5 0.5"
-      ></a-mixin>
-      <a-mixin id="pointerControlled"
-          hoverable grabbable stretchable draggable droppable
-          shadow
-          event-set__dragdrop="_event: drag-drop; geometry.primitive: sphere; geometry.radius: 0.25"
-          event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
-          event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
-          event-set__dragon="_event: dragover-start; material.wireframe: true"
-          event-set__dragoff="_event: dragover-end; material.wireframe: false">
-      </a-mixin>
       <a-mixin id="movable"
         hoverable grabbable stretchable draggable droppable></a-mixin>
 
     </a-assets>
+
+
+
+    
     <a-entity environment ="preset: forest"></a-entity>
 
-    <a-entity gltf-model="#galleryRoom" scale="1 1 1" position="-3 0.1 0"></a-entity>
     <a-entity log geometry="primitive: plane" material="color: #111" text="color: lightgreen" position="0 2 -4"></a-entity>
+
 
     <!-- camera rig -->
     <a-entity id="player">
       <!-- camera -->
-      <a-entity id="camera"  position="0 1 0" login camera wasd-controls look-controls></a-entity>
+      <a-entity id="camera"  position="0 1 0" camera wasd-controls look-controls login></a-entity>
       <!-- hand controls -->
-      <a-box material="color:red" class="collidable"></a-box>
       <a-entity  id="rhand"  mixin="touch" hand-controls="hand: right" spawn-entity save-upload menu blink-controls="button: trigger; snapTurn: false"></a-entity>
     </a-entity>
     </a-scene>
