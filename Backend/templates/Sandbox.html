@@ -1,0 +1,146 @@
+<html>
+<head>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <!--replace-->
+  <script src="/static/components/gamestate.js"></script>
+  <!--replace-->
+  <script src="/static/components/spawn-entity.js"></script>
+  <!--replace-->
+  <script src="/static/components/save-upload.js"></script>
+  <!--replace-->
+  <script src="/static/components/menu.js"></script>
+  <!--replace-->
+  <script src="/static/components/strech.js"></script>
+  <!--replace-->
+  <script src="/static/components/set-active.js"></script>
+  <!--replace-->
+  <script src="/static/components/custom-assets.js"></script>
+  <!--replace-->
+  <script src="/static/components/load-world.js"></script>
+  <!--replace-->
+  <script src="/static/components/aframe-super-keyboard.min.js"></script>
+  <!--replace-->
+  <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+  <!--replace-->
+  <script src="/static/components/login.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.1.0/dist/aframe-physics-system.js"></script>
+  <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
+  <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
+  <script src="https://unpkg.com/aframe-log-component/dist/aframe-log-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.3.2/dist/aframe-environment-component.min.js"></script>
+
+
+
+<script>
+        AFRAME.registerComponent('phase-shift', {
+        init: function () {
+          var el = this.el
+          el.addEventListener('gripdown', function () {
+            el.setAttribute('collision-filter', {collisionForces: true})
+          })
+          el.addEventListener('gripup', function () {
+            el.setAttribute('collision-filter', {collisionForces: false})
+          })
+        }
+      })
+</script>
+
+  <script id="plane" type="text/html">
+    <a-entity class="link"
+      geometry="primitive: plane; height: 1; width: 1"
+      material="shader: flat; src: #cubes-thumb"
+      sound="on: click; src: #click-sound"></a-entity>
+  </script>
+
+  <script id="frame" type="text/html">
+    <!--replace-->
+    <a-gltf-model src="/static/assets/scene.gltf" position="1 0 -.06" scale="0.01 0.01 0.01" rotation="0 270 0"></a-gltf-model>
+    <a-image src="#picture" height="2.1" width="1.6" position="0 1.25 0"></a-image>
+  </script>
+
+</head>
+<body>
+  <a-scene custom-assets gamestate physics="gravity: 0; friction:0.5" id="scene" >
+    <a-assets>
+      <img id="picture" src="https://browserstack.wpenginepowered.com/wp-content/uploads/2021/03/resp-design-mode-700x550.png">
+      <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
+      <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg">
+      <!--replace-->
+      <a-asset-item id="galleryRoom" src="/static/assets/galleryRoom/vr_gallery1mb.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="duck" src="/static/assets/glb/Duck.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="toycar" src="/static/assets/toycar/ToyCar.gltf"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="display_case" src="/static/assets/glb/display_case.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="modern_bench" src="/static/assets/glb/modern_bench.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="sofa" src="/static/assets/glb/sofa.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="plant" src="/static/assets/glb/palm_plant.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="picture_frame" src="/static/assets/glb/picture_frame.glb"></a-asset-item>
+      <!--replace-->
+      <a-asset-item id="stand" src="/static/assets/glb/stand.glb"></a-asset-item>
+      <a-mixin id="controllerhands" 
+      super-hands="grabStartButtons: gripdown;
+                   grabEndButtons: gripup; 
+                   dragDropStartButtons: gripdown, ybuttondown; 
+                   dragDropEndButtons: gripdown, ybuttonup"
+                   sphere-collider="objects: a-box">
+      </a-mixin>
+      <a-mixin id="physicsBody"
+                 hoverable grabbable stretchable draggable
+                 collision-filter="collisionForces: false"
+                 event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+                 event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+                 dynamic-body shadow set-active></a-mixin>
+      <a-mixin id="controller-right" mixin="controllerhands"
+       oculus-touch-controls="hand: right">
+      </a-mixin>
+      <a-mixin id="controller-left" mixin="controllerhands"
+      oculus-touch-controls="hand: left">
+      </a-mixin>
+      <a-mixin id="touch"
+      physics-collider phase-shift
+      collision-filter="collisionForces: false"
+      static-body="shape: sphere; sphereRadius: 0.02"
+      super-hands="colliderEvent: collisions;
+                   colliderEventProperty: els;
+                   colliderEndEvent: collisions;
+                   colliderEndEventProperty: clearedEls;
+                   grabStartButtons: gripdown;
+                   grabEndButtons: gripup; 
+                   dragDropStartButtons: gripdown, ybuttondown; 
+                   dragDropEndButtons: gripdown, ybuttonup">
+      </a-mixin>
+      <a-mixin id="movable"
+        hoverable grabbable stretchable draggable droppable></a-mixin>
+
+    </a-assets>
+
+
+
+    
+    <a-entity environment ="preset: forest"></a-entity>
+
+    <a-entity log geometry="primitive: plane" material="color: #111" text="color: lightgreen" position="0 2 -4"></a-entity>
+
+
+    <!-- camera rig -->
+    <a-entity id="player">
+      <!-- camera -->
+      <a-entity id="camera"  position="0 1 0" camera wasd-controls look-controls login></a-entity>
+      <!-- hand controls -->
+      <a-entity  id="rhand"  mixin="touch" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"" spawn-entity save-upload menu blink-controls="button: trigger; snapTurn: false"></a-entity>
+    </a-entity>
+    </a-scene>
+</body>  
+</html>

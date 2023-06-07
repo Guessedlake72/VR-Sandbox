@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <script defer src="index.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+
+</head>
+
+<body>
+  <main id="main-holder">
+
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <a href="#" class="header item">
+          VR Sandbox Uploading Interface
+        </a>
+        <a href="#" class="item">Home</a>
+        <div class="ui simple dropdown item">
+          Dropdown <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item" href="#">Link Item</a>
+            <a class="item" href="#">Link Item</a>
+            <div class="divider"></div>
+            <div class="header">Header Item</div>
+            <div class="item">
+              <i class="dropdown icon"></i>
+              Sub Menu
+              <div class="menu">
+                <a class="item" href="#">Link Item</a>
+                <a class="item" href="#">Link Item</a>
+              </div>
+            </div>
+            <a class="item" href="#">Link Item</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui main text container">
+    <h1 id="login-header">Login</h1>
+    
+    <form class="ui large form">
+      <div class="ui stacked segment">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="email" placeholder="E-mail address">
+          <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div></div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password">
+          <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div></div>
+        </div>
+        <div class="ui fluid large teal submit button">Login</div>
+      </div>
+
+      <div class="ui error message"></div>
+
+    </form>
+
+    <table class="ui celled table">
+        <thead>
+          <th>ID</th>
+          <th>UserID</th>
+          <th>src</th>
+          <th>type</th>
+        </thead>
+        <tbody id="table-body">
+        
+        </tbody>
+      </table>
+      
+      <form id="usrform" class="ui form" action = "/upload" method = "post" enctype="multipart/form-data">
+        <input type="text" name="userID" placeholder="UserID"/>
+        <input type="file" name="file" />
+        <input type="number" name="scale" placeholder="Scale" />
+        <input type="text" name="title" placeholder="Title" />        
+        <textarea name="desc" form="usrform">Enter Description here...</textarea>
+ 
+        <input type = "submit" value="Upload">  
+    </form>  
+  </div>
+  </main>
+</body>
+
+</html>
