@@ -19,7 +19,8 @@ AFRAME.registerSystem('gamestate', {
        menuActive: {type: 'bool', default: false},
        materialMenuActive: {type: 'bool', default: false},
        activeUser: {type: 'string',default: "None"},
-       activeWorld: {type: 'string',default: "None"}
+       activeWorld: {type: 'string',default: "None"},
+       readOnly: {type: 'bool', default: false}
     },
   
     init: function () {

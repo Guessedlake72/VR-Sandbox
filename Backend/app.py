@@ -19,7 +19,7 @@ def interface():
 
 @app.route('/images/<userID>', methods = ['GET'])  
 def images(userID):
-    path = './static/assets/' + userID + "/"
+    path = './static/customAssets/' + userID + "/"
     if os.path.exists(path):
         librarian = {}            
         images = []
@@ -95,22 +95,22 @@ def worlds(userID):
 @app.route('/saveworld/<userID>/<worldName>', methods = ['POST'])  
 def saveworld(userID,worldName):
     f = request.get_json()
-    path = './static/assets/' + userID + "/"
+    path = './static/customAssets/' + userID + "/"
     if os.path.exists(path):     
-        with open('./static/assets/' + userID + '/'+ worldName +'.json', 'w') as outfile:
+        with open('./static/customAssets/' + userID + '/'+ worldName +'.json', 'w') as outfile:
             json.dump(f, outfile)
     return render_template("index.html")  
 
 
 @app.route('/loadworld/<userID>/<worldName>', methods = ['GET'])  
 def loadworld(userID,worldName):
-    with open('./static/assets/' + userID + "/" + worldName+ ".json", 'r') as f:
+    with open('./static/customAssets/' + userID + "/" + worldName+ ".json", 'r') as f:
         world = json.load(f)
     return world
 
 @app.route('/user/<userID>', methods = ['GET'])  
 def user(userID):
-    path = './static/assets/' + userID + "/"
+    path = './static/customAssets/' + userID + "/"
     if os.path.exists(path):            
         images = []
         files  = os.listdir(path)

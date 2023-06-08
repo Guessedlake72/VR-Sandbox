@@ -19,7 +19,6 @@ AFRAME.registerComponent('login', {
         grabHand.setAttribute("hand-controls","hand:left; handModelStyle: lowPoly; color: #ffcccc")
         grabHand.setAttribute("strech","")
         grabHand.setAttribute("blink-controls","button: trigger;")
-
   
         laserhand.addEventListener('raycaster-intersection', function (evt) {
             console.log(evt.detail.els[0].id);
@@ -37,6 +36,27 @@ AFRAME.registerComponent('login', {
                 roomModel.setAttribute("gltf-model","#galleryRoom")
                 roomModel.setAttribute("scale","1 1 1")
                 roomModel.setAttribute("position","-3 0.1 0")
+                roomModel.setAttribute("class", "preset")
+                scene.appendChild(roomModel)
+                player.lastChild.remove();
+                player.appendChild(grabHand);
+                document.getElementById("loginMenuContainer").remove();
+            }else if(hoverObject == "preset2"){
+                roomModel = document.createElement('a-entity');
+                roomModel.setAttribute("gltf-model","#galleryRoom")
+                roomModel.setAttribute("scale","1 1 1")
+                roomModel.setAttribute("position","-3 0.1 0")
+                roomModel.setAttribute("class", "preset")
+                scene.appendChild(roomModel)
+                player.lastChild.remove();
+                player.appendChild(grabHand);
+                document.getElementById("loginMenuContainer").remove();
+            }else if(hoverObject == "preset3"){
+                roomModel = document.createElement('a-entity');
+                roomModel.setAttribute("gltf-model","#galleryRoom")
+                roomModel.setAttribute("scale","1 1 1")
+                roomModel.setAttribute("position","-3 0.1 0")
+                roomModel.setAttribute("class", "preset")
                 scene.appendChild(roomModel)
                 player.lastChild.remove();
                 player.appendChild(grabHand);
@@ -47,78 +67,10 @@ AFRAME.registerComponent('login', {
             }
             else if(hoverObject != ""){
                 state.activeWorld = hoverObject;
-                axios.get('/loadworld/'+ state.activeUser +"/" + hoverObject,{
-                    headers: {
-                        "ngrok-skip-browser-warning":"any" 
-                        }
-                })
-                .then(function (response) {
-                console.log(response);
-                objects = response.data;
-  
-                for(var i = 0; i < objects.length; i++){
-                    var piece = document.createElement('a-entity');
-                    obj = objects[i];
-                    console.log(obj)
-    
-                    if(obj[0] == "primitive"){
-                        piece.classList.add("primitive");
-                        var bounding = document.createElement('a-box')
-                        bounding.setAttribute("material", "transparent: true; opacity:0.0")
-                        var object = document.createElement(obj[1]);
-                        object.setAttribute("material",obj[2]);
-                        bounding.appendChild(object);
-                        piece.appendChild(bounding)
-                    } else if (obj[0] == 'image'){
-                        var object = document.createElement('a-image');
-                        piece.classList.add("customImage")
-                        object.setAttribute("width", 3);
-                        object.setAttribute("height",3);
-                        object.setAttribute("src", obj[1])
-                        piece.appendChild(object)
-                    } else if (obj[0] == 'model'){
-                        var bounding = document.createElement('a-box')
-                        bounding.setAttribute("material", "transparent: true; opacity:0.0")
-                        var object = document.createElement('a-entity')
-                        object.setAttribute("gltf-model", obj[1]);
-                        object.setAttribute("scale", obj[2]);
-                        object.setAttribute("position", {x:0, y:-.4, z:0});
-                        bounding.appendChild(object);
-                        piece.appendChild(bounding)
-                        piece.classList.add("customModel")
-                    }   else if (obj[0] == 'text'){
-                        var bounding = document.createElement('a-box')
-                        bounding.setAttribute("material", "transparent: true; opacity:0.0")
-                        var background = document.createElement("a-entity");
-                        background.setAttribute("geometry",{primitive: "plane",
-                            height: 3,
-                            width: 4});
-                        background.setAttribute("material",{shader: "flat"});
-                        bounding.appendChild(background);
-                        var title = document.createElement("a-entity");
-                        title.setAttribute("text", "value: "+ obj[1]+"; color: black");
-                        title.setAttribute("scale", {x:5, y:5, z:5});
-                        title.setAttribute("position", {x:.5, y:1, z:.1});
-                        bounding.appendChild(title);
-                        var text = document.createElement("a-entity");
-                        text.setAttribute("text", "value: "+obj[2] + "; color: black");
-                        text.setAttribute("scale", {x:3, y:3, z:3});
-                        text.setAttribute("position", {x:0, y:0, z:.1});
-                        bounding.appendChild(text);
-                        piece.appendChild(bounding)
-                        piece.classList.add("customText")
-                    }
-                    piece.setAttribute('position',  obj[3]);
-                    piece.setAttribute('scale', obj[4]);
-                    piece.setAttribute('rotation',obj[5]);
-                    piece.classList.add("physicsBody")
-                    piece.setAttribute("mixin","physicsBody")
-                    scene.appendChild(piece);
-                }
+                buildWorld()
                 player.lastChild.remove();
                 player.appendChild(grabHand);
                 document.getElementById("loginMenuContainer").remove();
-            })
             }
         });
 
@@ -135,11 +87,95 @@ AFRAME.registerComponent('login', {
             }
         });
 
+        function buildWorld(){
+            var state = scene.getAttribute('gamestate');
+            axios.get('/loadworld/'+ state.activeUser +"/" + state.activeWorld,{
+                headers: {
+                    "ngrok-skip-browser-warning":"any" 
+                    }
+            })
+            .then(function (response) {
+            console.log(response);
+            objects = response.data;
+
+            for(var i = 0; i < objects.length; i++){
+                obj = objects[i];
+                console.log(obj)
+                if(obj[0] == "preset"){
+                    var object = document.createElement('a-entity')
+                    object.setAttribute("gltf-model", obj[1]);
+                    object.setAttribute("scale", obj[4]);
+                    object.setAttribute("position", obj[3]);
+                    object.classList.add("preset")
+                    scene.appendChild(object);
+                    console.log(object)
+                } else {
+                var piece = document.createElement('a-entity');
+
+                if(obj[0] == "primitive"){
+                    piece.classList.add("primitive");
+                    var bounding = document.createElement('a-box')
+                    bounding.setAttribute("material", "transparent: true; opacity:0.0")
+                    var object = document.createElement(obj[1]);
+                    object.setAttribute("material",obj[2]);
+                    bounding.appendChild(object);
+                    piece.appendChild(bounding)
+                } else if (obj[0] == 'image'){
+                    var object = document.createElement('a-image');
+                    piece.classList.add("customImage")
+                    object.setAttribute("width", 3);
+                    object.setAttribute("height",3);
+                    object.setAttribute("src", obj[1])
+                    piece.appendChild(object)
+                } else if (obj[0] == 'model'){
+                    var bounding = document.createElement('a-box')
+                    bounding.setAttribute("material", "transparent: true; opacity:0.0")
+                    var object = document.createElement('a-entity')
+                    object.setAttribute("gltf-model", obj[1]);
+                    object.setAttribute("scale", obj[2]);
+                    object.setAttribute("position", {x:0, y:-.4, z:0});
+                    bounding.appendChild(object);
+                    piece.appendChild(bounding)
+                    piece.classList.add("customModel")
+                }   else if (obj[0] == 'text'){
+                    var bounding = document.createElement('a-box')
+                    bounding.setAttribute("material", "transparent: true; opacity:0.0")
+                    var background = document.createElement("a-entity");
+                    background.setAttribute("geometry",{primitive: "plane",
+                        height: 3,
+                        width: 4});
+                    background.setAttribute("material",{shader: "flat"});
+                    bounding.appendChild(background);
+                    var title = document.createElement("a-entity");
+                    title.setAttribute("text", "value: "+ obj[1]+"; color: black");
+                    title.setAttribute("scale", {x:5, y:5, z:5});
+                    title.setAttribute("position", {x:.5, y:1, z:.1});
+                    bounding.appendChild(title);
+                    var text = document.createElement("a-entity");
+                    text.setAttribute("text", "value: "+obj[2] + "; color: black");
+                    text.setAttribute("scale", {x:3, y:3, z:3});
+                    text.setAttribute("position", {x:0, y:0, z:.1});
+                    bounding.appendChild(text);
+                    piece.appendChild(bounding)
+                    piece.classList.add("customText")
+                }
+                piece.setAttribute('position',  obj[3]);
+                piece.setAttribute('scale', obj[4]);
+                piece.setAttribute('rotation',obj[5]);
+                piece.classList.add("physicsBody")
+                piece.setAttribute("mixin","physicsBody")
+                scene.appendChild(piece);
+            }
+            }
+        })
+        }
+
         function displayPage(pagenumber){
 
             var scene = document.querySelector('#scene');
             var camera = document.querySelector('#camera');
-            
+            var state = scene.getAttribute('gamestate');
+
             if(document.getElementById("loginMenuContainer")){
                 document.getElementById("loginMenuContainer").remove();
               }
@@ -155,6 +191,38 @@ AFRAME.registerComponent('login', {
 
             switch(pagenumber){
                 case 0:
+
+                    const queryString = window.location.search;
+                    const urlParams = new URLSearchParams(queryString);
+                    if(urlParams.has('emulateUser')){
+                        var emulateUser = urlParams.get('emulateUser');
+                        var world = urlParams.get('world');
+                        var readOnly = urlParams.get('readOnly');
+                        var state = scene.getAttribute('gamestate');
+                        state.activeUser = emulateUser;
+                        state.activeWorld = world;
+                        buildWorld();
+                        if(readOnly == true){
+                            var teleportHand = document.createElement("a-entity");
+                            teleportHand.setAttribute("hand-controls","hand:left; handModelStyle: lowPoly; color: #ffcccc")
+                            teleportHand.setAttribute("blink-controls","button: trigger;")
+                            var user = document.getElementById("player");
+                            user.lastChild.remove();
+                            user.appendChild(teleportHand);
+                        } else {
+                            var grabHand = document.createElement("a-entity");
+                            grabHand.id = "lhand";
+                            grabHand.setAttribute("mixin", "touch");
+                            grabHand.setAttribute("hand-controls","hand:left; handModelStyle: lowPoly; color: #ffcccc")
+                            grabHand.setAttribute("strech","")
+                            grabHand.setAttribute("blink-controls","button: trigger;")
+  
+                            var user = document.getElementById("player");
+                            user.lastChild.remove();
+                            user.appendChild(grabHand);
+                        }
+
+                    }else {
                     var title = document.createElement("a-entity");
                     title.setAttribute("text", "value: Welcome To VR Sandbox!; color: red");
                     title.setAttribute("scale", {x:20, y:20, z:20});
@@ -172,6 +240,7 @@ AFRAME.registerComponent('login', {
                     keyboard.setAttribute("position",'0 -.3 -1')
                     keyboard.setAttribute("rotation",'-30 0 0')
                     camera.appendChild(keyboard);
+                    }
                     break;
 
                 case 1:
@@ -260,13 +329,16 @@ AFRAME.registerComponent('login', {
                     menuContainer.appendChild(image3)
                     break;
 
-
-
             }
             menuContainer.setAttribute("position",{ x: -.8, y: -.8, z: -1.5});
             menuContainer.setAttribute("scale", { x: 0.1, y: 0.1, z: 0.1 } );
             menuContainer.id = "loginMenuContainer";
             camera.appendChild(menuContainer);
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            if(urlParams.has('emulateUser')){
+                menuContainer.remove();
+            }
         }
       }
 
