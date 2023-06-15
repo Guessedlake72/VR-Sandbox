@@ -135,7 +135,7 @@ AFRAME.registerComponent('spawn-entity', {
           object.setAttribute("scale", {x:scale/100, y:scale/100, z:scale/100});
           bounding.appendChild(object);
           piece.appendChild(bounding);
-          piece.classList.add("builtIn")
+          piece.classList.add("customModel")
           break;
         case 3:
           var object = document.createElement('a-image')

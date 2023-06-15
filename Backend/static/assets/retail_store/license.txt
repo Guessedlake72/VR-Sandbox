@@ -1,0 +1,11 @@
+Model Information:
+* title:	Retail Store at HNL International Airport
+* source:	https://sketchfab.com/3d-models/retail-store-at-hnl-international-airport-8396289dbe6b4d07b9ac52ccd12e4b6a
+* author:	SilverChen (https://sketchfab.com/silverchen1727)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Retail Store at HNL International Airport" (https://sketchfab.com/3d-models/retail-store-at-hnl-international-airport-8396289dbe6b4d07b9ac52ccd12e4b6a) by SilverChen (https://sketchfab.com/silverchen1727) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

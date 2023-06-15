@@ -35,7 +35,7 @@ AFRAME.registerComponent('login', {
                 roomModel = document.createElement('a-entity');
                 roomModel.setAttribute("gltf-model","#galleryRoom")
                 roomModel.setAttribute("scale","1 1 1")
-                roomModel.setAttribute("position","-3 0.1 0")
+                roomModel.setAttribute("position","-3 0.01 0")
                 roomModel.setAttribute("class", "preset")
                 scene.appendChild(roomModel)
                 player.lastChild.remove();
@@ -43,21 +43,15 @@ AFRAME.registerComponent('login', {
                 document.getElementById("loginMenuContainer").remove();
             }else if(hoverObject == "preset2"){
                 roomModel = document.createElement('a-entity');
-                roomModel.setAttribute("gltf-model","#galleryRoom")
+                roomModel.setAttribute("gltf-model","#retail")
                 roomModel.setAttribute("scale","1 1 1")
-                roomModel.setAttribute("position","-3 0.1 0")
+                roomModel.setAttribute("position","-3 0.2 0")
                 roomModel.setAttribute("class", "preset")
                 scene.appendChild(roomModel)
                 player.lastChild.remove();
                 player.appendChild(grabHand);
                 document.getElementById("loginMenuContainer").remove();
             }else if(hoverObject == "preset3"){
-                roomModel = document.createElement('a-entity');
-                roomModel.setAttribute("gltf-model","#galleryRoom")
-                roomModel.setAttribute("scale","1 1 1")
-                roomModel.setAttribute("position","-3 0.1 0")
-                roomModel.setAttribute("class", "preset")
-                scene.appendChild(roomModel)
                 player.lastChild.remove();
                 player.appendChild(grabHand);
                 document.getElementById("loginMenuContainer").remove();
@@ -78,7 +72,44 @@ AFRAME.registerComponent('login', {
             console.log(evt.detail)
             console.log(page)
             if(page == 0){
+               // var state = scene.getAttribute('gamestate');
                 state.activeUser = evt.detail.value;
+                console.log("sstarting")
+                var scene = document.querySelector('#scene');
+                axios.get('/images/'+state.activeUser, {
+                  headers: {
+                    "ngrok-skip-browser-warning":"any" 
+                           }
+                })
+                .then(function (response) {
+                    console.log(response)
+                    var images = response.data;
+        
+                    if(images.length >=16){
+                      state.customImages1=images.slice(0,15);
+                      state.customImages2=images.slice(16,images.length);
+                    } else {
+                      state.customImages1 = images;
+                    }
+        
+                })
+                axios.get('/models/'+state.activeUser, {
+                  headers: {
+                    "ngrok-skip-browser-warning":"any" 
+                    }
+                })
+                .then(function (response) {
+                    console.log(response)
+                    var models = response.data;
+        
+                    if(models.length >=16){
+                      state.customModels1=models.slice(0,15);
+                      state.customModels2=models.slice(16,models.length);
+                    } else {
+                      state.customModels1 = models;
+                    }
+        
+                })
                 displayPage(1)
             } else if(page == 3){
                 console.log("PAGE2")
@@ -304,7 +335,7 @@ AFRAME.registerComponent('login', {
                     title.setAttribute("position", {x:13, y:13, z:2});
                     menuContainer.appendChild(title);
                     var image = document.createElement("a-image");
-                    image.setAttribute("src", '/static/thumbnails/gallery.png')
+                    image.setAttribute("src", '/static/assets/thumbnails/gallery.png')
                     image.setAttribute("width", 3);
                     image.setAttribute("height",3);
                     image.setAttribute("position","4 8 .3")
@@ -312,7 +343,7 @@ AFRAME.registerComponent('login', {
                     image.id = "preset1"
                     menuContainer.appendChild(image)
                     image2 = document.createElement("a-image");
-                    image2.setAttribute("src", '/static/thumbnails/shop.png')
+                    image2.setAttribute("src", '/static/assets/thumbnails/shop.png')
                     image2.setAttribute("position","8.5 8 .3")
                     image2.setAttribute("width", 3);
                     image2.setAttribute("height",3);
@@ -320,7 +351,7 @@ AFRAME.registerComponent('login', {
                     image2.id = "preset2"
                     menuContainer.appendChild(image2)
                     image3 = document.createElement("a-image");
-                    image3.setAttribute("src", '/static/thumbnails/open.png')
+                    image3.setAttribute("src", '/static/assets/thumbnails/open.png')
                     image3.setAttribute("position","13 8 .3")
                     image3.setAttribute("width", 3);
                     image3.setAttribute("height",3);

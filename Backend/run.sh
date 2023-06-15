@@ -1,4 +1,5 @@
 #!/bin/bash
+. .venv/bin/activate
 export FLASK_APP=app
 export FLASK_ENV=development
-flask run --cert=adhoc -h 192.168.20.162 --debug
+flask run --cert=adhoc -h 0.0.0.0 --debug
