@@ -5,10 +5,17 @@ import os
 from flask_cors import CORS
 import pickle 
 import json 
+from flask_pymongo import PyMongo
+
 
 app = Flask(__name__)  
 cors = CORS(app)
 CORS(app)
+
+app.config["MONGO_URI"] = "mongodb://localhost:27017/data"
+mongo = PyMongo(app)
+db = mongo.db
+
 @app.route('/')  
 def main():  
     return render_template("Sandbox.html")  
@@ -16,6 +23,16 @@ def main():
 @app.route('/interface')
 def interface():
         return render_template("index.html")  
+
+@app.route("/add_one")
+def add_one():
+    db.images.insert_one({'title': "todo title", 'body': "todo body"})
+    return jsonify(message="success")
+
+@app.route('/file/<filename>')
+def file(filename):
+    print(filename)
+    return mongo.send_file(filename)
 
 @app.route('/images/<userID>', methods = ['GET'])  
 def images(userID):
@@ -58,7 +75,7 @@ def upload():
         desc = request.form['desc']
         scale = request.form['scale']
         filename=f.filename.replace(" ", "")
-
+        mongo.save_file("hello.txt",f)
         if os.path.exists('./static/customAssets/' + id ):  
             librarian = {}        
             f.save('./static/customAssets/' + id +"/" + filename)
