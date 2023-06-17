@@ -6,6 +6,7 @@ from flask_cors import CORS
 import pickle 
 import json 
 from flask_pymongo import PyMongo
+from collections.abc import Mapping
 
 
 app = Flask(__name__)  
@@ -75,7 +76,7 @@ def upload():
         desc = request.form['desc']
         scale = request.form['scale']
         filename=f.filename.replace(" ", "")
-        mongo.save_file("hello.txt",f)
+        mongo.save_file(id+"_"+filename,f)
         if os.path.exists('./static/customAssets/' + id ):  
             librarian = {}        
             f.save('./static/customAssets/' + id +"/" + filename)
